@@ -21,6 +21,9 @@ class Hero:
             self.freeze -= 1
             return False
 
+    def heal(self):
+        self.health *= 1.15
+
 
 class Strength(Hero):
     def __init__(self, _st, _ag, _int, team):
