@@ -19,6 +19,7 @@ class Board:
     def sizes(self):
         return [self.x_size, self.y_size]
 
+
     def move(self, hero, st, num):
         if 0 < num < 3:
             for i in range(self.x_size):
@@ -26,20 +27,18 @@ class Board:
                     if self.field[i][j] == hero:
                         if st == 'направо':
                             self.field[i][j] = 0
-                            # if ета функция
-                            self.field[i + num][j] = hero
+                            self.check_move(i + num, j, hero)
                         elif st == 'налево':
                             self.field[i][j] = 0
-                            # ета функция
-                            self.field[i - num][j] = hero
+                            self.check_move(i - num, j, hero)
                         elif st == 'вверх':
                             self.field[i][j] = 0
-                            # ета функция
-                            self.field[i][j + num] = hero
+                            self.check_move(i, j + num, hero)
                         elif st == 'вниз':
                             self.field[i][j] = 0
-                            # ета функция
-                            self.field[i][j - num] = hero
+                            self.check_move(i, j - num, hero)
+                        else:
+                            print('Неправильно задана команда')
         else:
             print('Неправильное число')
 
@@ -49,9 +48,11 @@ class Board:
         else:
             return False
 
-    # def check_move(self, x, y):
-    # if self.field[x][y] != 0:
-    # сражение типо
+    def check_move(self, x, y, hero_1):
+        if self.field[x][y] != 0:
+            self.battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
+        else:
+            self.field[x][y] = hero_1
 
     def game(self, team):
         while True:
@@ -72,7 +73,8 @@ class Board:
                 print('Team 2 win')
 
     def battle(self, attacking, defending):
-        self.attack_at =attacking._st
+        self.attack_at = attacking._st
+        #  нужно проверить, из одной команды герои или нет, и если из одной, то сражения не будет
 
 #  board должен знать кто ходит
 # проверить пустая ли клетка, если на клетке враг - сражение:
