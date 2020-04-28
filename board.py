@@ -19,6 +19,40 @@ class Board:
     def sizes(self):
         return [self.x_size, self.y_size]
 
+    def move(self, hero, st, num):
+        if 0 < num < 3:
+            for i in range(self.x_size):
+                for j in range(self.y_size):
+                    if self.field[i][j] == hero:
+                        if st == 'направо':
+                            self.field[i][j] = 0
+                            # if ета функция
+                            self.field[i + num][j] = hero
+                        elif st == 'налево':
+                            self.field[i][j] = 0
+                            # ета функция
+                            self.field[i - num][j] = hero
+                        elif st == 'вверх':
+                            self.field[i][j] = 0
+                            # ета функция
+                            self.field[i][j + num] = hero
+                        elif st == 'вниз':
+                            self.field[i][j] = 0
+                            # ета функция
+                            self.field[i][j - num] = hero
+        else:
+            print('Неправильное число')
+
+    def check_board(self, x, y):
+        if x <= self.x_size and y <= self.y_size:
+            return True
+        else:
+            return False
+
+    # def check_move(self, x, y):
+    # if self.field[x][y] != 0:
+    # сражение типо
+
     def game(self, team):
         while True:
             # check team
