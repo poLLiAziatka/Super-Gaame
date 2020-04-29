@@ -1,4 +1,5 @@
 import pygame
+import pygame_textinput
 
 FPS = 60
 size = 60
@@ -9,6 +10,11 @@ start_button_color = (58, 202, 19)
 exit_button_color = (214, 44, 17)
 team1_color = (233, 0, 58)
 team2_color = (162, 239, 0)
+team1_input = pygame_textinput.TextInput(initial_string='', font_family='serif', font_size=size // 10 * 8,
+                                         text_color=team1_color, cursor_color=(255, 255, 255))
+team2_input = pygame_textinput.TextInput(initial_string='', font_family='serif', font_size=size // 10 * 8,
+                                         text_color=team2_color, cursor_color=(255, 255, 255))
+
 
 pygame.init()
 
@@ -45,22 +51,29 @@ def team_name_and_field_size():
 
         pos = pygame.mouse.get_pos()
 
-        for i in pygame.event.get():
+        events = pygame.event.get()
+        for i in events:
             if i.type == pygame.QUIT: exit()
             if i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         heroes()
 
-        f1 = pygame.font.SysFont('serif', 48)
+        f1 = pygame.font.SysFont('serif', size // 10 * 8)
         team1_text = f1.render('Name team 1: ', 1, team1_color)
         team2_text = f1.render('Name team 2: ', 1, team2_color)
         fieldx_text = f1.render('Length field: ', 1, (180, 0, 0))
         fieldy_text = f1.render('Width field: ', 1, (180, 0, 0))
+
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (size, 2 * size))
         sc.blit(fieldx_text, (size, 3 * size))
         sc.blit(fieldy_text, (size, 4 * size))
+
+        team1_input.update(events)
+        sc.blit(team1_input.get_surface(), (size * 7, size))
+        team2_input.update(events)
+        sc.blit(team2_input.get_surface(), (size * 7, 2 * size))
 
         pygame.draw.rect(sc, start_button_color, (13 * size, 8 * size, 3 * size, 1 * size))
 
@@ -82,10 +95,10 @@ def heroes():
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         game()
 
-        f1 = pygame.font.SysFont('serif', 20)
+        f1 = pygame.font.SysFont('serif', size // 10 * 3)
         team1_text = f1.render('Name team 1', 1, team1_color)
         team2_text = f1.render('Name team 2', 1, team2_color)
-        characters = ['Инжинер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
+        characters = ['Инженер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (8 * size, size))
         i = 1
