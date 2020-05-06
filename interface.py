@@ -4,12 +4,11 @@ import pygame_textinput
 FPS = 60
 size = 60
 
-background_color = (255, 255, 255)
-name_game_color = (255, 150, 100)
-start_button_color = (58, 202, 19)
-exit_button_color = (214, 44, 17)
-team1_color = (233, 0, 58)
-team2_color = (162, 239, 0)
+background_color = (231, 240, 237)
+name_game_color = (127, 185, 194)
+button_color_1 = (149, 172, 178)
+team1_color = (98, 140, 166)
+team2_color = (22, 79, 85)
 team1_input = pygame_textinput.TextInput(initial_string='', font_family='serif', font_size=size // 10 * 8,
                                          text_color=team1_color, cursor_color=(255, 255, 255))
 team2_input = pygame_textinput.TextInput(initial_string='', font_family='serif', font_size=size // 10 * 8,
@@ -39,8 +38,8 @@ def main_menu():
                     elif 5 * size <= pos[0] <= 9 * size and 6 * size <= pos[1] <= 7 * size:
                         exit()
         pygame.draw.rect(sc, name_game_color, (4 * size, 2 * size, 6 * size, 2 * size))
-        pygame.draw.rect(sc, start_button_color, (5 * size, 5 * size, 4 * size, 1 * size))
-        pygame.draw.rect(sc, exit_button_color, (5 * size, 6 * size, 4 * size, 1 * size))
+        pygame.draw.rect(sc, button_color_1, (5 * size, 5 * size, 4 * size, 1 * size))
+        pygame.draw.rect(sc, button_color_1, (5 * size, 6 * size, 4 * size, 1 * size))
 
         pygame.display.update()
         clock.tick(FPS)
@@ -75,7 +74,7 @@ def team_name_and_field_size():
         team2_input.update(events)
         sc.blit(team2_input.get_surface(), (size * 7, 2 * size))
 
-        pygame.draw.rect(sc, start_button_color, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
 
         pygame.display.update()
         clock.tick(FPS)
@@ -112,7 +111,7 @@ def heroes():
             sc.blit(f1.render("y: ", 1, (0, 0, 0)), (14 * size, i * size))
         i = 1
 
-        pygame.draw.rect(sc, start_button_color, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
         pygame.display.update()
         clock.tick(FPS)
 
