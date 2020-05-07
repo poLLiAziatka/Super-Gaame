@@ -51,6 +51,9 @@ class Engineer(Intelligency):
         super().__init__(_st, _ag, _int, team)
         self.skills = [self.enemy_block, self.degrade]
 
+    def st(self):
+        return int(self._st)
+
     def enemy_block(self, enemy):
         self.freeze += 1
 

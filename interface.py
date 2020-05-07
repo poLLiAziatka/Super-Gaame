@@ -2,14 +2,13 @@ import pygame
 import pygame_textinput
 
 FPS = 60
-size = 60
+size = 70
 
 background_color = (231, 240, 237)
 name_game_color = (127, 185, 194)
 button_color_1 = (149, 172, 178)
 team1_color = (98, 140, 166)
 team2_color = (22, 79, 85)
-
 
 pygame.init()
 
@@ -42,7 +41,6 @@ def main_menu():
 
 
 def team_name_and_field_size():
-
     active_team2 = False
     active_team1 = False
     name_team1 = ''
@@ -56,7 +54,8 @@ def team_name_and_field_size():
 
         events = pygame.event.get()
         for i in events:
-            if i.type == pygame.QUIT: exit()
+            if i.type == pygame.QUIT:
+                exit()
             elif i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
@@ -74,8 +73,7 @@ def team_name_and_field_size():
                         print(name_team1)
                     elif team2_input.update(events):
                         name_team2 = team2_input.get_text()
-
-
+                        print(name_team2)
 
         team1_surf = pygame.Surface((size * 6, size))
         team1_surf.fill((255, 255, 255))
