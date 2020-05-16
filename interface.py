@@ -1,11 +1,12 @@
 import pygame
-import pygame_textinput
+from board import Board
+from hero import *
 
 FPS = 60
 size = 70
 
 background_color = (231, 240, 237)
-name_game_color = (127, 185, 194)
+main_game_color = (127, 185, 194)
 button_color_1 = (149, 172, 178)
 team1_color = (98, 140, 166)
 team2_color = (22, 79, 85)
@@ -16,6 +17,7 @@ FONT = pygame.font.Font(None, 32)
 clock = pygame.time.Clock()
 
 sc = pygame.display.set_mode((size * 16, size * 9))
+sc.fill(background_color)
 
 
 class InputBox:
@@ -50,7 +52,7 @@ class InputBox:
 
     def update(self):
         # Resize the box if the text is too long.
-        width = max(200, self.txt_surface.get_width() + 10)
+        width = max(self.rect.w, self.txt_surface.get_width() + 10)
         self.rect.w = width
 
     def draw(self, sc):
@@ -78,7 +80,7 @@ def main_menu():
                         team_name_and_field_size()
                     elif 5 * size <= pos[0] <= 9 * size and 6 * size <= pos[1] <= 7 * size:
                         exit()
-        pygame.draw.rect(sc, name_game_color, (4 * size, 2 * size, 6 * size, 2 * size))
+        pygame.draw.rect(sc, main_game_color, (4 * size, 2 * size, 6 * size, 2 * size))
         pygame.draw.rect(sc, button_color_1, (5 * size, 5 * size, 4 * size, 1 * size))
         pygame.draw.rect(sc, button_color_1, (5 * size, 6 * size, 4 * size, 1 * size))
 
@@ -104,10 +106,10 @@ def team_name_and_field_size():
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         name_team1 = input_box1.get()
                         name_team2 = input_box2.get()
-                        x_size_field = input_box3.get()
-                        y_size_field = input_box4.get()
+                        x_size_field = int(input_box3.get())
+                        y_size_field = int(input_box4.get())
 
-                        heroes(name_team1, name_team2, x_size_field, y_size_field)
+                        heroes_func(name_team1, name_team2, x_size_field, y_size_field)
             for box in input_boxes:
                 box.handle_event(i)
 
@@ -139,9 +141,21 @@ def team_name_and_field_size():
         clock.tick(FPS)
 
 
-def heroes(name_team1, name_team2, x_size_field, y_size_field):
-    while 1:
+def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
+    characters = ['Инженер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
+    input_boxes = []
+    for i in range(len(characters)):
+        k = 0.35
+        input_box = InputBox(6 * size + 20, (i + 2) * size, size * k, size * k)
+        input_box1 = InputBox(7 * size + 20, (i + 2) * size, size * k, size * k)
+        input_box2 = InputBox(13 * size + 20, (i + 2) * size, size * k, size * k)
+        input_box3 = InputBox(14 * size + 20, (i + 2) * size, size * k, size * k)
+        input_boxes.append(input_box)
+        input_boxes.append(input_box1)
+        input_boxes.append(input_box2)
+        input_boxes.append(input_box3)
 
+    while 1:
         sc.fill(background_color)
 
         pos = pygame.mouse.get_pos()
@@ -151,24 +165,35 @@ def heroes(name_team1, name_team2, x_size_field, y_size_field):
             if i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
-                        game()
+                        coordinates = []
+                        for input_box in input_boxes:
+                            coordinates.append(int(input_box.get()))
+                        game(name_team1, name_team2, x_size_field, y_size_field, coordinates)
+            for box in input_boxes:
+                box.handle_event(i)
+
+        for box in input_boxes:
+            box.update()
+
+        for box in input_boxes:
+            box.draw(sc)
 
         f1 = pygame.font.SysFont('serif', size // 10 * 3)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
         team1_text = f1.render(name_team1, 1, team1_color)
         team2_text = f1.render(name_team2, 1, team2_color)
-        characters = ['Инженер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
+
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (8 * size, size))
-        i = 1
+        j = 1
         for character in characters:
-            i += 1
-            sc.blit(f1.render(character, 1, team1_color), (size, i * size))
-            sc.blit(f1.render(character, 1, team2_color), (8 * size, i * size))
-            sc.blit(f1.render("x: ", 1, button_color_1), (6 * size, i * size))
-            sc.blit(f1.render("y: ", 1, button_color_1), (7 * size, i * size))
-            sc.blit(f1.render("x: ", 1, button_color_1), (13 * size, i * size))
-            sc.blit(f1.render("y: ", 1, button_color_1), (14 * size, i * size))
+            j += 1
+            sc.blit(f1.render(character, 1, team1_color), (size, j * size))
+            sc.blit(f1.render(character, 1, team2_color), (8 * size, j * size))
+            sc.blit(f1.render("x: ", 1, button_color_1), (6 * size, j * size))
+            sc.blit(f1.render("y: ", 1, button_color_1), (7 * size, j * size))
+            sc.blit(f1.render("x: ", 1, button_color_1), (13 * size, j * size))
+            sc.blit(f1.render("y: ", 1, button_color_1), (14 * size, j * size))
 
         txt_info = f2.render(f' х не должно превышать {x_size_field}; y {y_size_field}', 1, (0, 0, 0))
         sc.blit(txt_info, (size, 8 * size))
@@ -178,8 +203,59 @@ def heroes(name_team1, name_team2, x_size_field, y_size_field):
         clock.tick(FPS)
 
 
-def game():
-    pass
+def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
+    if not coordinates:
+        coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2, 6]
+    board = Board(x_size_field, y_size_field)
+    heroes_team_0 = []
+    heroes_team_1 = []
+
+    engineer_0 = Engineer(12, 30, 8, name_team1)
+    engineer_1 = Engineer(12, 30, 8, name_team2)
+    heroes_team_0.append(engineer_0)
+    heroes_team_1.append(engineer_1)
+
+    lis_0 = Leader_iron_sleeves(15, 25, 10, name_team1)
+    lis_1 = Leader_iron_sleeves(15, 25, 10, name_team2)
+    heroes_team_0.append(lis_0)
+    heroes_team_1.append(lis_1)
+
+    journalist_0 = Journalist()
+    journalist_1 = Journalist()
+    heroes_team_0.append(journalist_0)
+    heroes_team_1.append(journalist_1)
+
+    shershnyga_0 = Shershnyga()
+    shershnyga_1 = Shershnyga()
+    heroes_team_0.append(shershnyga_0)
+    heroes_team_1.append(shershnyga_1)
+
+    katamaronov_0 = Katamaronov(26, 10, 14, name_team1)
+    katamaronov_1 = Katamaronov(26, 10, 14, name_team2)
+    heroes_team_0.append(katamaronov_0)
+    heroes_team_1.append(katamaronov_1)
+
+    rosa_0 = Rosa_robot(29, 11, 10, name_team1)
+    rosa_1 = Rosa_robot(29, 11, 10, name_team2)
+    heroes_team_0.append(rosa_0)
+    heroes_team_1.append(rosa_1)
+    heroes = heroes_team_0 + heroes_team_1
+
+    i = 0
+    for hero in heroes:
+        board.add(hero, coordinates[i], coordinates[i + 1])
+        i += 2
+
+    while 1:
+        sc.fill(background_color)
+        for i in pygame.event.get():
+            if i.type == pygame.QUIT: exit()
+
+        for i in range(x_size_field):
+            pygame.draw.line(sc, main_game_color, [(i + 1) * size, (i + 1) * size], [(i + 1) * size, 9 * size], 3)
+
+    pygame.display.update()
+    clock.tick(FPS)
 
 
 main_menu()

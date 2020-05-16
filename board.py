@@ -1,8 +1,9 @@
 import random
 
+
 class Board:
     def __init__(self, x_size, y_size):
-        self.field = [[0] * y_size for _ in range(x_size)]
+        self.field = [[0] * int(y_size) for _ in range(int(x_size))]
         self.x_size = x_size
         self.y_size = y_size
         self.status_move = 0
@@ -20,7 +21,6 @@ class Board:
 
     def sizes(self):
         return [self.x_size, self.y_size]
-
 
     def move(self, hero, st, num):
         if 0 < num < 3:
@@ -56,6 +56,7 @@ class Board:
         else:
             self.field[x][y] = hero_1
 
+    # вот это нам наверное не нужно
     def game(self, team):
         while True:
             # check team
@@ -89,16 +90,6 @@ class Board:
         defending.healf -= attacking.attack
 
         defending.attack = random.randint(1, defending._st)
-
-
-
-
-
-
-
-
-
-
 
 #  board должен знать кто ходит
 # проверить пустая ли клетка, если на клетке враг - сражение:

@@ -113,3 +113,7 @@ class Rosa_robot(Agility):
 
 class Shershnyga():
     pass
+
+
+class Journalist():
+    pass
