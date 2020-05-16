@@ -1,5 +1,6 @@
 from random import randint
 from board import Board
+from PIL import Image
 
 
 class Hero:
@@ -57,6 +58,9 @@ class Engineer(Intelligency):
     def degrade(self, hero):
         self._int -= 2
 
+    def image(self):
+        return Image.open('1.jpg')
+
 
 class Leader_iron_sleeves(Intelligency):
     def __init__(self, _st, _ag, _int, team):
@@ -81,6 +85,9 @@ class Leader_iron_sleeves(Intelligency):
         for hero in lst_freeze:
             self.freeze += 2
 
+    def image(self):
+        return Image.open('2.jpg')
+
 
 class Katamaronov(Agility):
     def __init__(self, _st, _ag, _int, team):
@@ -94,6 +101,9 @@ class Katamaronov(Agility):
         damage = self.damage + randint(- self.p_num, self.p_num)
         self.health -= damage
 
+    def image(self):
+        return Image.open('3.jpg')
+
 
 class Rosa_robot(Agility):
     def __init__(self, _st, _ag, _int, team):
@@ -106,6 +116,9 @@ class Rosa_robot(Agility):
     def friend_hit(self, enemy_hero):
         if enemy_hero == Shershnyga:
             enemy_hero.intel = int(enemy_hero.intel * 0.85)
+
+    def image(self):
+        return Image.open('4.jpg')
 
 
 class Shershnyga():
