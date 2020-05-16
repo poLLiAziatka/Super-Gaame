@@ -9,12 +9,58 @@ name_game_color = (127, 185, 194)
 button_color_1 = (149, 172, 178)
 team1_color = (98, 140, 166)
 team2_color = (22, 79, 85)
-
+COLOR_INACTIVE = pygame.Color('lightskyblue3')
+COLOR_ACTIVE = pygame.Color('dodgerblue2')
 pygame.init()
-
+FONT = pygame.font.Font(None, 32)
 clock = pygame.time.Clock()
 
 sc = pygame.display.set_mode((size * 16, size * 9))
+
+
+class InputBox:
+    def __init__(self, x, y, w, h, text=''):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.color = COLOR_INACTIVE
+        self.text = text
+        self.txt_surface = FONT.render(text, True, self.color)
+        self.active = False
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # If the user clicked on the input_box rect.
+            if self.rect.collidepoint(event.pos):
+                # Toggle the active variable.
+                self.active = not self.active
+            else:
+                self.active = False
+            # Change the current color of the input box.
+            self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
+        if event.type == pygame.KEYDOWN:
+            if self.active:
+                if event.key == pygame.K_RETURN:
+                    print(self.text)
+                    self.text = ''
+                elif event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                else:
+                    self.text += event.unicode
+                # Re-render the text.
+                self.txt_surface = FONT.render(self.text, True, self.color)
+
+    def update(self):
+        # Resize the box if the text is too long.
+        width = max(200, self.txt_surface.get_width() + 10)
+        self.rect.w = width
+
+    def draw(self, sc):
+        # Blit the text.
+        sc.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
+        # Blit the rect.
+        pygame.draw.rect(sc, self.color, self.rect, 2)
+
+    def get(self):
+        return self.text
 
 
 # Главное меню
@@ -41,14 +87,11 @@ def main_menu():
 
 
 def team_name_and_field_size():
-    active_team2 = False
-    active_team1 = False
-    name_team1 = ''
-    name_team2 = ''
-    team1_input = pygame_textinput.TextInput(initial_string=name_team1, font_family='serif', font_size=size // 10 * 8,
-                                             text_color=team1_color, cursor_color=team1_color)
-    team2_input = pygame_textinput.TextInput(initial_string='', font_family='serif', font_size=size // 10 * 8,
-                                             text_color=team2_color, cursor_color=team2_color)
+    input_box1 = InputBox(size * 7, size, size * 6, size)
+    input_box2 = InputBox(size * 7, size * 2, size * 6, size)
+    input_box3 = InputBox(size * 7, size * 3, size * 6, size)
+    input_box4 = InputBox(size * 7, size * 4, size * 6, size)
+    input_boxes = [input_box1, input_box2, input_box3, input_box4]
     while 1:
         pos = pygame.mouse.get_pos()
 
@@ -59,57 +102,36 @@ def team_name_and_field_size():
             elif i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
-                        heroes(name_team1, name_team2)
-                    elif size * 7 <= pos[0] <= size * 12 and 1 * size <= pos[1] <= 2 * size:
-                        active_team1 = True
-                        active_team2 = False
+                        name_team1 = input_box1.get()
+                        name_team2 = input_box2.get()
+                        x_size_field = input_box3.get()
+                        y_size_field = input_box4.get()
 
-                    elif size * 7 <= pos[0] <= size * 12 and 2 * size <= pos[1] <= 3 * size:
-                        active_team2 = True
-                        active_team1 = False
+                        heroes(name_team1, name_team2, x_size_field, y_size_field)
+            for box in input_boxes:
+                box.handle_event(i)
 
-                    elif team1_input.update(events):
-                        name_team1 = team1_input.get_text()
-                        print(name_team1)
-                    elif team2_input.update(events):
-                        name_team2 = team2_input.get_text()
-                        print(name_team2)
+        for box in input_boxes:
+            box.update()
 
-        team1_surf = pygame.Surface((size * 6, size))
-        team1_surf.fill((255, 255, 255))
-
-        team2_surf = pygame.Surface((size * 6, size))
-        team2_surf.fill((255, 255, 255))
-
-        sc.blit(team1_surf, (7 * size, size - 5))
-        sc.blit(team2_surf, (7 * size, 2 * size))
-
-        if active_team1:
-            team1_input.update(events)
-            sc.blit(team1_input.get_surface(), (size * 7, size))
-            team1_text = f1.render(name_team1, 1, team1_color)
-            team2_text = f1.render('', 1, team2_color)
-            team1_surf.blit(team1_text, (7 * size, size))
-            team2_surf.blit(team2_text, (7 * size, 2 * size))
-
-        elif active_team2:
-            team2_input.update(events)
-            sc.blit(team2_input.get_surface(), (size * 7, 2 * size))
-            team1_text = f1.render('', 1, team1_color)
-            team2_text = f1.render(name_team2, 1, team2_color)
-            team1_surf.blit(team1_text, (7 * size, size))
-            team2_surf.blit(team2_text, (7 * size, 2 * size))
+        for box in input_boxes:
+            box.draw(sc)
 
         f1 = pygame.font.SysFont('serif', size // 10 * 8)
+        f2 = pygame.font.SysFont('serif', size // 10 * 3)
         team1_text = f1.render('Name team 1: ', 1, team1_color)
         team2_text = f1.render('Name team 2: ', 1, team2_color)
         fieldx_text = f1.render('Length field: ', 1, button_color_1)
         fieldy_text = f1.render('Width field: ', 1, button_color_1)
 
+        txt_info = f2.render('Убедительная просьба, в полях Length field и Width field писать целые числа от 6 до 10. '
+                             'Иначе горите в аду.', 1, (0, 0, 0))
+
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (size, 2 * size))
         sc.blit(fieldx_text, (size, 3 * size))
         sc.blit(fieldy_text, (size, 4 * size))
+        sc.blit(txt_info, (size, 7 * size))
 
         pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
 
@@ -117,7 +139,7 @@ def team_name_and_field_size():
         clock.tick(FPS)
 
 
-def heroes(name_team1, name_team2):
+def heroes(name_team1, name_team2, x_size_field, y_size_field):
     while 1:
 
         sc.fill(background_color)
@@ -132,6 +154,7 @@ def heroes(name_team1, name_team2):
                         game()
 
         f1 = pygame.font.SysFont('serif', size // 10 * 3)
+        f2 = pygame.font.SysFont('serif', size // 10 * 3)
         team1_text = f1.render(name_team1, 1, team1_color)
         team2_text = f1.render(name_team2, 1, team2_color)
         characters = ['Инженер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
@@ -146,6 +169,9 @@ def heroes(name_team1, name_team2):
             sc.blit(f1.render("y: ", 1, button_color_1), (7 * size, i * size))
             sc.blit(f1.render("x: ", 1, button_color_1), (13 * size, i * size))
             sc.blit(f1.render("y: ", 1, button_color_1), (14 * size, i * size))
+
+        txt_info = f2.render(f' х не должно превышать {x_size_field}; y {y_size_field}', 1, (0, 0, 0))
+        sc.blit(txt_info, (size, 8 * size))
 
         pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
         pygame.display.update()
