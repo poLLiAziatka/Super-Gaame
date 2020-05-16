@@ -10,7 +10,7 @@ size = 65
 # это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
 main_game_color = (127, 185, 194)
-button_color_1 = (149, 172, 178)
+additional_game_color = (149, 172, 178)
 team1_color = (98, 140, 166)
 team2_color = (22, 79, 85)
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
@@ -86,8 +86,8 @@ def main_menu():
                     elif 5 * size <= pos[0] <= 9 * size and 6 * size <= pos[1] <= 7 * size:
                         exit()
         pygame.draw.rect(sc, main_game_color, (4 * size, 2 * size, 6 * size, 2 * size))
-        pygame.draw.rect(sc, button_color_1, (5 * size, 5 * size, 4 * size, 1 * size))
-        pygame.draw.rect(sc, button_color_1, (5 * size, 6 * size, 4 * size, 1 * size))
+        pygame.draw.rect(sc, additional_game_color, (5 * size, 5 * size, 4 * size, 1 * size))
+        pygame.draw.rect(sc, additional_game_color, (5 * size, 6 * size, 4 * size, 1 * size))
 
         pygame.display.update()
         clock.tick(FPS)
@@ -128,10 +128,10 @@ def team_name_and_field_size():
 
         f1 = pygame.font.SysFont('serif', size // 10 * 8)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
-        team1_text = f1.render('Name team 1: ', 1, team1_color)
-        team2_text = f1.render('Name team 2: ', 1, team2_color)
-        fieldx_text = f1.render('Length field: ', 1, button_color_1)
-        fieldy_text = f1.render('Width field: ', 1, button_color_1)
+        team1_text = f1.render('Назване команды 1: ', 1, team1_color)
+        team2_text = f1.render('Название команды 2: ', 1, team2_color)
+        fieldx_text = f1.render('Длина поля: ', 1, additional_game_color)
+        fieldy_text = f1.render('Ширина поля: ', 1, additional_game_color)
 
         txt_info = f2.render('Убедительная просьба, в полях Length field и Width field писать целые числа от 6 до 10. '
                              'Иначе горите в аду.', 1, (0, 0, 0))
@@ -142,7 +142,7 @@ def team_name_and_field_size():
         sc.blit(fieldy_text, (size, 4 * size))
         sc.blit(txt_info, (size, 7 * size))
 
-        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
 
         pygame.display.update()
         clock.tick(FPS)
@@ -199,15 +199,15 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
             j += 1
             sc.blit(f1.render(character, 1, team1_color), (size, j * size))
             sc.blit(f1.render(character, 1, team2_color), (8 * size, j * size))
-            sc.blit(f1.render("x: ", 1, button_color_1), (6 * size, j * size))
-            sc.blit(f1.render("y: ", 1, button_color_1), (7 * size, j * size))
-            sc.blit(f1.render("x: ", 1, button_color_1), (13 * size, j * size))
-            sc.blit(f1.render("y: ", 1, button_color_1), (14 * size, j * size))
+            sc.blit(f1.render("x: ", 1, additional_game_color), (6 * size, j * size))
+            sc.blit(f1.render("y: ", 1, additional_game_color), (7 * size, j * size))
+            sc.blit(f1.render("x: ", 1, additional_game_color), (13 * size, j * size))
+            sc.blit(f1.render("y: ", 1, additional_game_color), (14 * size, j * size))
 
         txt_info = f2.render(f' х не должно превышать {x_size_field}; y {y_size_field}', 1, (0, 0, 0))
         sc.blit(txt_info, (size, 8 * size))
 
-        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         pygame.display.update()
         clock.tick(FPS)
 
@@ -220,11 +220,20 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         f1 = pygame.font.SysFont('serif', size // 2)
         f2 = pygame.font.SysFont('serif', size // 4)
         txt_hero = f1.render('hero', 1, main_game_color)
-        # twt_st = f2.render('')
+        txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
+        pygame.draw.rect(sc, (255, 0, 0), (size * 12.5, size * 4, hero.health // 4, size // 4), 1)
+        txt_st = f2.render(f'Сила: {hero._st} ', 1, additional_game_color)
+        txt_ag = f2.render(f'Ловкость: {hero._ag} ', 1, additional_game_color)
+        txt_int = f2.render(f'Интеллект: {hero._int} ', 1, additional_game_color)
 
+        # тут должна быть картинка
+        pygame.draw.rect(sc, (0, 0, 0), (size * 11.5, size * 1.5, size * 2 , size * 2), 1)
+        sc.blit(txt_hero, (size * 12, size // 2))
+        sc.blit(txt_health, (size * 11, size * 4))
+        sc.blit(txt_st, (size * 11, size * 4.5))
+        sc.blit(txt_ag, (size * 11, size * 5))
+        sc.blit(txt_int, (size * 11, size * 5.5))
 
-
-        sc.blit(txt_hero, (size * 12, size // 4))
     if not coordinates:
         coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2,
                        6, 3, 1, 3, 2, 3, 4, 3, 5, 3, 6, 4, 1, 4, 2, 4, 3, 4, 5, 4, 6, 5, 1]
@@ -304,7 +313,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             surf.fill(main_game_color)
             sc.blit(surf, rect[1])
 
-        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         pygame.display.update()
         clock.tick(FPS)
 
@@ -329,7 +338,7 @@ def final(win_team):
         sc.blit(txt_win, (size * 4, size * 2))
         sc.blit(txt_win_team, (size, size * 3))
 
-        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         pygame.display.update()
         clock.tick(FPS)
 
