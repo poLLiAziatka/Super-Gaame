@@ -5,7 +5,7 @@ from board import Board
 from hero import *
 
 FPS = 60
-size = 60
+size = 65
 
 # это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
@@ -214,10 +214,12 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
 
 
 # не хочет работать
+# у меня не работает голова, чтобы написать формулы для поля
+# я тупой пенечек, что вы от меня хотите
 def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     if not coordinates:
         coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2,
-                       6]
+                       6, 3, 1, 3, 2, 3, 4, 3, 5, 3, 6, 4, 1, 4, 2, 4, 3, 4, 5, 4, 6, 5, 1 ]
     board = Board(x_size_field, y_size_field)
     heroes_team_0 = []
     heroes_team_1 = []
@@ -261,6 +263,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         i += 2
 
     while 1:
+        rects = []
         sc.fill(background_color)
         pos = pygame.mouse.get_pos()
         for i in pygame.event.get():
@@ -269,9 +272,27 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         main_menu()
+            for j in rects:
+                pass
 
-        for i in range(x_size_field):
-            pygame.draw.line(sc, main_game_color, [(i + 1) * size, (i + 1) * size], [(i + 1) * size, 9 * size], 3)
+        s_x = size * 7 // x_size_field
+        s_y = size * 7 // y_size_field
+        for i in range(x_size_field + 1):
+            pygame.draw.line(sc, main_game_color, [(i + 1) * s_x + size,  s_y], [(i + 1) * s_x + size, 10 * s_y], 3)
+
+        for i in range(y_size_field + 1):
+            pygame.draw.line(sc, main_game_color, [s_x + size, (i + 1) * s_y], [9 * s_x + size, (i + 1) * s_y], 3)
+
+        i = 0
+
+        for hero in heroes:
+            # здесь будут картинки
+            surf = pygame.Surface((size + s_x, s_y))
+            surf.fill(main_game_color)
+            rect = (size + coordinates[i] * s_x, coordinates[i + 1] * s_y, s_x, s_y)
+            sc.blit(surf, rect)
+            i += 2
+            rects.append([hero, rect])
 
         pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
         pygame.display.update()
@@ -303,4 +324,4 @@ def final(win_team):
         clock.tick(FPS)
 
 
-final('крутые колхозники')
+game(1, 2, 8, 9, [])
