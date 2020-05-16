@@ -83,3 +83,33 @@ class Leader_iron_sleeves(Intelligency):
                     lst_freeze.append(field[i][j])
         for hero in lst_freeze:
             self.freeze += 2
+
+
+class Katamaronov(Agility):
+    def __init__(self, _st, _ag, _int, team):
+        super().__init__(_st, _ag, _int, team)
+        self.skills = [self.skipidar, self.troubles_with_head]
+
+    def skipidar(self):
+        self.damage = int(self.damage * 1.15)
+
+    def troubles_with_head(self):
+        damage = self.damage + randint(- self.p_num, self.p_num)
+        self.health -= damage
+
+
+class Rosa_robot(Agility):
+    def __init__(self, _st, _ag, _int, team):
+        super().__init__(_st, _ag, _int, team)
+        self.skills = [self.you_dontknow, self.friend_hit]
+
+    def you_dontknow(self, enemy_hero):
+        enemy_hero.intel -= 2
+
+    def friend_hit(self, enemy_hero):
+        if enemy_hero == Shershnyga:
+            enemy_hero.intel = int(enemy_hero.intel * 0.85)
+
+
+class Shershnyga():
+    pass
