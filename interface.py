@@ -1,10 +1,13 @@
+# я не знаю, что тут происходит и как это хреньь вообще работает
+
 import pygame
 from board import Board
 from hero import *
 
 FPS = 60
-size = 70
+size = 60
 
+# это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
 main_game_color = (127, 185, 194)
 button_color_1 = (149, 172, 178)
@@ -13,13 +16,15 @@ team2_color = (22, 79, 85)
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
 COLOR_ACTIVE = pygame.Color('dodgerblue2')
 pygame.init()
-FONT = pygame.font.Font(None, 32)
+FONT = pygame.font.SysFont(None, 32)
 clock = pygame.time.Clock()
+
 
 sc = pygame.display.set_mode((size * 16, size * 9))
 sc.fill(background_color)
 
 
+# это ввод, работает и хорошо
 class InputBox:
     def __init__(self, x, y, w, h, text=''):
         self.rect = pygame.Rect(x, y, w, h)
@@ -61,6 +66,7 @@ class InputBox:
         # Blit the rect.
         pygame.draw.rect(sc, self.color, self.rect, 2)
 
+    # get я написала сама, какая молодец
     def get(self):
         return self.text
 
@@ -88,6 +94,8 @@ def main_menu():
         clock.tick(FPS)
 
 
+# ввод названий команд и размеров поля
+# не работает удаление текста в вводе
 def team_name_and_field_size():
     input_box1 = InputBox(size * 7, size, size * 6, size)
     input_box2 = InputBox(size * 7, size * 2, size * 6, size)
@@ -141,6 +149,8 @@ def team_name_and_field_size():
         clock.tick(FPS)
 
 
+# ввод координат героев
+# здесь все работает и слава богу
 def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
     characters = ['Инженер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
     input_boxes = []
@@ -203,9 +213,11 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
         clock.tick(FPS)
 
 
+# не хочет работать
 def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     if not coordinates:
-        coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2, 6]
+        coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2,
+                       6]
     board = Board(x_size_field, y_size_field)
     heroes_team_0 = []
     heroes_team_1 = []
@@ -241,6 +253,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     heroes_team_1.append(rosa_1)
     heroes = heroes_team_0 + heroes_team_1
 
+    # ааааа, я заколебалась писать это все
+
     i = 0
     for hero in heroes:
         board.add(hero, coordinates[i], coordinates[i + 1])
@@ -248,14 +262,45 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
     while 1:
         sc.fill(background_color)
+        pos = pygame.mouse.get_pos()
         for i in pygame.event.get():
             if i.type == pygame.QUIT: exit()
+            if i.type == pygame.MOUSEBUTTONDOWN:
+                if i.button == 1:
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        main_menu()
 
         for i in range(x_size_field):
             pygame.draw.line(sc, main_game_color, [(i + 1) * size, (i + 1) * size], [(i + 1) * size, 9 * size], 3)
 
-    pygame.display.update()
-    clock.tick(FPS)
+        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.display.update()
+        clock.tick(FPS)
 
 
-main_menu()
+def final(win_team):
+    while 1:
+        sc.fill(background_color)
+        pos = pygame.mouse.get_pos()
+        for i in pygame.event.get():
+            if i.type == pygame.QUIT: exit()
+            if i.type == pygame.MOUSEBUTTONDOWN:
+                if i.button == 1:
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        main_menu()
+
+        f1 = pygame.font.SysFont('serif', size)
+        f2 = pygame.font.SysFont('serif', size + 30)
+
+        txt_win = f1.render('Победила команда', 1, main_game_color)
+        txt_win_team = f2.render(win_team, 1, main_game_color)
+
+        sc.blit(txt_win, (size * 4, size * 2))
+        sc.blit(txt_win_team, (size, size * 3))
+
+        pygame.draw.rect(sc, button_color_1, (13 * size, 8 * size, 3 * size, 1 * size))
+        pygame.display.update()
+        clock.tick(FPS)
+
+
+final('крутые колхозники')
