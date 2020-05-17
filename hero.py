@@ -121,8 +121,34 @@ class Rosa_robot(Agility):
         return Image.open('4.jpg')
 
 
-class Shershnyga():
-    pass
+class Shershnyga(Strength):
+    def __init__(self, _st, _ag, _int, team):
+        super().__init__(_st, _ag, _int, team)
+        self.skills = [self.rosa_beats, self.degrade]
 
-def Journalist():
-    pass
+    def degrade(self, hero, _st):
+        _st *= 1.15
+
+    def rosa_beats(self, enemy_hero):
+        if enemy_hero == Rosa_robot:
+            self.freeze += 1
+
+    def image(self):
+        return Image.open('5.jpg')
+
+def Journalist(Strength):
+    def __init__(self, _st, _ag, _int, team):
+        super().__init__(_st, _ag, _int, team)
+        self.skills = [self.degrade, self.run]
+
+    def degrade(self, hero):
+        self.damage *= 0.7
+
+    def run(self, hero, _ag):
+        if _ag <= 7:
+            _ag += 2
+
+    def image(self):
+        return Image.open('6.jpg')
+
+
