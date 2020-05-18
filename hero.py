@@ -104,6 +104,9 @@ class Katamaronov(Agility):
     def image(self):
         return Image.open('3.jpg')
 
+    def __str__(self):
+        return 'Катамаранов'
+
 
 class Rosa_robot(Agility):
     def __init__(self, _st, _ag, _int, team):
@@ -136,7 +139,8 @@ class Shershnyga(Strength):
     def image(self):
         return Image.open('5.jpg')
 
-def Journalist(Strength):
+
+class Journalist(Strength):
     def __init__(self, _st, _ag, _int, team):
         super().__init__(_st, _ag, _int, team)
         self.skills = [self.degrade, self.run]
@@ -150,5 +154,3 @@ def Journalist(Strength):
 
     def image(self):
         return Image.open('6.jpg')
-
-

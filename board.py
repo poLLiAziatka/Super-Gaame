@@ -1,5 +1,6 @@
 import random
 
+
 class Board:
     def __init__(self, x_size, y_size):
         self.field = [[0] * y_size for _ in range(x_size)]
@@ -20,7 +21,6 @@ class Board:
 
     def sizes(self):
         return [self.x_size, self.y_size]
-
 
     def move(self, hero, st, num):
         if 0 < num < 3:
@@ -75,21 +75,21 @@ class Board:
                 print('Team 2 win')
 
     def battle(self, attacking, defending):
-        def battle(self, attacking, defending):
-            attacking.attack = random.randint(1, attacking._st)
-            defending.bias = defending.healf / 5 * 8
+        attacking.attack = random.randint(1, attacking._st)
+        defending.bias = defending.healf / 5 * 8
 
-            if random.randint(0, 100) in [x for x in range(defending.bias)]:
-                attacking.attack = 0
+        if random.randint(0, 100) in [x for x in range(defending.bias)]:
+            attacking.attack = 0
 
-            attacking.sk_pr = attacking._int / 5 * 7
+        attacking.sk_pr = attacking._int / 5 * 7
 
-            if random.randint(0, 100) in [x for x in range(attacking.sk_pr)]:
-                pass
+        if random.randint(0, 100) in [x for x in range(attacking.sk_pr)]:
+            i = random.randint(0, 1)
+            attacking.skills[i]
 
-            defending.healf -= attacking.attack
+        defending.healf -= attacking.attack
 
-            defending.attack = random.randint(1, defending._st)
+        defending.attack = random.randint(1, defending._st)
         #  нужно проверить, из одной команды герои или нет, и если из одной, то сражения не будет
 
 #  board должен знать кто ходит

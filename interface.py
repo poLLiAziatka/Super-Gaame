@@ -85,9 +85,23 @@ def main_menu():
                         team_name_and_field_size()
                     elif 5 * size <= pos[0] <= 9 * size and 6 * size <= pos[1] <= 7 * size:
                         exit()
+
         pygame.draw.rect(sc, main_game_color, (4 * size, 2 * size, 6 * size, 2 * size))
         pygame.draw.rect(sc, additional_game_color, (5 * size, 5 * size, 4 * size, 1 * size))
         pygame.draw.rect(sc, additional_game_color, (5 * size, 6 * size, 4 * size, 1 * size))
+
+        f1 = pygame.font.SysFont('serif', size // 10 * 17)
+        f2 = pygame.font.SysFont('serif', size // 10 * 10)
+        txt_name = f1.render('Plапенко', 1, background_color)
+        txt_button_start = f2.render('Play', 1, background_color)
+        txt_button_exit = f2.render('Exit', 1, background_color)
+        pygame.draw.rect(sc, background_color, (4 * size, 6 * size, 7 * size, 6 * size), 5)
+
+        sc.blit(txt_button_start, (6 * size + 5, 5 * size - 5))
+        sc.blit(txt_button_exit, (6 * size + 5, 6 * size))
+        sc.blit(txt_name, (4 * size + 5, 2 * size))
+
+
 
         pygame.display.update()
         clock.tick(FPS)
@@ -128,10 +142,10 @@ def team_name_and_field_size():
 
         f1 = pygame.font.SysFont('serif', size // 10 * 8)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
-        team1_text = f1.render('Назване команды 1: ', 1, team1_color)
-        team2_text = f1.render('Название команды 2: ', 1, team2_color)
-        fieldx_text = f1.render('Длина поля: ', 1, additional_game_color)
-        fieldy_text = f1.render('Ширина поля: ', 1, additional_game_color)
+        team1_text = f1.render('Name team 1: ', 1, team1_color)
+        team2_text = f1.render('Name team 2: ', 1, team2_color)
+        fieldx_text = f1.render('Length field: ', 1, additional_game_color)
+        fieldy_text = f1.render('Width field: ', 1, additional_game_color)
 
         txt_info = f2.render('Убедительная просьба, в полях Length field и Width field писать целые числа от 6 до 10. '
                              'Иначе горите в аду.', 1, (0, 0, 0))
@@ -227,7 +241,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         txt_int = f2.render(f'Интеллект: {hero._int} ', 1, additional_game_color)
 
         # тут должна быть картинка
-        pygame.draw.rect(sc, (0, 0, 0), (size * 11.5, size * 1.5, size * 2 , size * 2), 1)
+        pygame.draw.rect(sc, (0, 0, 0), (size * 11.5, size * 1.5, size * 2, size * 2), 1)
         sc.blit(txt_hero, (size * 12, size // 2))
         sc.blit(txt_health, (size * 11, size * 4))
         sc.blit(txt_st, (size * 11, size * 4.5))
@@ -251,16 +265,15 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     heroes_team_0.append(lis_0)
     heroes_team_1.append(lis_1)
 
-    journalist_0 = Journalist()
-    journalist_1 = Journalist()
+    journalist_0 = Journalist(11, 16, 23, name_team1)
+    journalist_1 = Journalist(11, 16, 23, name_team2)
     heroes_team_0.append(journalist_0)
     heroes_team_1.append(journalist_1)
 
-    shershnyga_0 = Shershnyga()
-    shershnyga_1 = Shershnyga()
+    shershnyga_0 = Shershnyga(17, 6, 27, name_team1)
+    shershnyga_1 = Shershnyga(17, 6, 27, name_team2)
     heroes_team_0.append(shershnyga_0)
     heroes_team_1.append(shershnyga_1)
-
     katamaronov_0 = Katamaronov(26, 10, 14, name_team1)
     katamaronov_1 = Katamaronov(26, 10, 14, name_team2)
     heroes_team_0.append(katamaronov_0)
@@ -314,6 +327,12 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             sc.blit(surf, rect[1])
 
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
+
+        if not heroes_team_1:
+            final(heroes_team_0)
+        elif not heroes_team_0:
+            final(heroes_team_1)
+
         pygame.display.update()
         clock.tick(FPS)
 
@@ -343,4 +362,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game(1, 2, 8, 9, [])
+# game('lhbvf', 'sdhhjh', 8, 9, [])
+# final('Дрима тима')
+main_menu()
