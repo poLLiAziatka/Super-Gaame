@@ -26,7 +26,7 @@ sc.fill(background_color)
 # это ввод, работает и хорошо
 class InputBox:
     def __init__(self, x, y, w, h, text=''):
-        self.rect = pygame.Rect(x, y, w, h)
+        self.rect = pygame.Rect(int(x), int(y), int(w), int(h))
         self.color = COLOR_INACTIVE
         self.text = text
         self.txt_surface = FONT.render(text, True, self.color)
@@ -242,18 +242,18 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
         txt_hero = f1.render('hero', 1, main_game_color)
         txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
-        pygame.draw.rect(sc, (255, 0, 0), (size * 12.5, size * 4, hero.health // 4, size // 4), 1)
+        pygame.draw.rect(sc, (255, 0, 0), (int(size * 12.5), size * 4, hero.health // 4, size // 4), 1)
         txt_st = f2.render(f'Сила: {hero._st} ', 1, additional_game_color)
         txt_ag = f2.render(f'Ловкость: {hero._ag} ', 1, additional_game_color)
         txt_int = f2.render(f'Интеллект: {hero._int} ', 1, additional_game_color)
 
         # тут должна быть картинка
-        pygame.draw.rect(sc, (0, 0, 0), (size * 11.5, size * 1.5, size * 2, size * 2), 1)
+        pygame.draw.rect(sc, (0, 0, 0), (int(size * 11.5), int(size * 1.5), size * 2, size * 2), 1)
         sc.blit(txt_hero, (size * 12, size // 2))
         sc.blit(txt_health, (size * 11, size * 4))
-        sc.blit(txt_st, (size * 11, size * 4.5))
+        sc.blit(txt_st, (size * 11, int(size * 4.5)))
         sc.blit(txt_ag, (size * 11, size * 5))
-        sc.blit(txt_int, (size * 11, size * 5.5))
+        sc.blit(txt_int, (size * 11, int(size * 5.5)))
 
 
 
@@ -334,7 +334,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             surf = pygame.Surface((size + s_x, s_y))
             surf.fill(main_game_color)
             sc.blit(surf, rect[1])
-        f3 = pygame.font.SysFont('serif', size // 10 * 7)
+        f3 = pygame.font.SysFont('serif', size // 10 * 8)
         text_continue = f3.render('   Finish', 1, background_color)
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
@@ -376,5 +376,5 @@ def final(win_team):
 
 
 # game('lhbvf', 'sdhhjh', 8, 9, [])
-final('Дрима тима')
-# main_menu()
+#  final('Дрима тима')
+main_menu()
