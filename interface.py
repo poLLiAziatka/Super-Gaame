@@ -142,10 +142,12 @@ def team_name_and_field_size():
 
         f1 = pygame.font.SysFont('serif', size // 10 * 8)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
+        f3 = pygame.font.SysFont('serif', size // 10 * 7)
         team1_text = f1.render('Name team 1: ', 1, team1_color)
         team2_text = f1.render('Name team 2: ', 1, team2_color)
         fieldx_text = f1.render('Length field: ', 1, additional_game_color)
         fieldy_text = f1.render('Width field: ', 1, additional_game_color)
+        text_continue = f3.render(' Continue', 1, background_color)
 
         txt_info = f2.render('Убедительная просьба, в полях Length field и Width field писать целые числа от 6 до 10. '
                              'Иначе горите в аду.', 1, (0, 0, 0))
@@ -157,7 +159,7 @@ def team_name_and_field_size():
         sc.blit(txt_info, (size, 7 * size))
 
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
-
+        sc.blit(text_continue, (13 * size, 8 * size))
         pygame.display.update()
         clock.tick(FPS)
 
@@ -165,7 +167,7 @@ def team_name_and_field_size():
 # ввод координат героев
 # здесь все работает и слава богу
 def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
-    characters = ['Инженер', "Глава ОПГ Жележные рукова", "Журналист", "Шершняга", "Роза Робот", "Катаморанов"]
+    characters = ['Инженер', "Глава ОПГ Железные рукава", "Журналист", "Шершняга", "Роза Робот", "Катамаранов"]
     input_boxes = []
     for i in range(len(characters)):
         k = 0.35
@@ -203,8 +205,10 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
 
         f1 = pygame.font.SysFont('serif', size // 10 * 3)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
+        f3 = pygame.font.SysFont('serif', size // 10 * 7)
         team1_text = f1.render(name_team1, 1, team1_color)
         team2_text = f1.render(name_team2, 1, team2_color)
+        text_continue = f3.render(' Continue', 1, background_color)
 
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (8 * size, size))
@@ -222,6 +226,7 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
         sc.blit(txt_info, (size, 8 * size))
 
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
+        sc.blit(text_continue, (13 * size, 8 * size))
         pygame.display.update()
         clock.tick(FPS)
 
@@ -233,6 +238,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     def info_hero(hero):
         f1 = pygame.font.SysFont('serif', size // 2)
         f2 = pygame.font.SysFont('serif', size // 4)
+
+
         txt_hero = f1.render('hero', 1, main_game_color)
         txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
         pygame.draw.rect(sc, (255, 0, 0), (size * 12.5, size * 4, hero.health // 4, size // 4), 1)
@@ -247,6 +254,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.blit(txt_st, (size * 11, size * 4.5))
         sc.blit(txt_ag, (size * 11, size * 5))
         sc.blit(txt_int, (size * 11, size * 5.5))
+
+
 
     if not coordinates:
         coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2,
@@ -325,8 +334,10 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             surf = pygame.Surface((size + s_x, s_y))
             surf.fill(main_game_color)
             sc.blit(surf, rect[1])
-
+        f3 = pygame.font.SysFont('serif', size // 10 * 7)
+        text_continue = f3.render('   Finish', 1, background_color)
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
+        sc.blit(text_continue, (13 * size, 8 * size))
 
         if not heroes_team_1:
             final(heroes_team_0)
@@ -350,18 +361,20 @@ def final(win_team):
 
         f1 = pygame.font.SysFont('serif', size)
         f2 = pygame.font.SysFont('serif', size + 30)
+        f3 = pygame.font.SysFont('serif', size // 10 * 9)
 
         txt_win = f1.render('Победила команда', 1, main_game_color)
         txt_win_team = f2.render(win_team, 1, main_game_color)
+        text_continue = f3.render('  Done', 1, background_color)
 
         sc.blit(txt_win, (size * 4, size * 2))
         sc.blit(txt_win_team, (size, size * 3))
-
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
+        sc.blit(text_continue, (13 * size, 8 * size))
         pygame.display.update()
         clock.tick(FPS)
 
 
 # game('lhbvf', 'sdhhjh', 8, 9, [])
-# final('Дрима тима')
-main_menu()
+final('Дрима тима')
+# main_menu()
