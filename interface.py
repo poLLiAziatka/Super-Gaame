@@ -5,7 +5,7 @@ from board import Board
 from hero import *
 
 FPS = 60
-size = 60
+size = 70
 
 # это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
