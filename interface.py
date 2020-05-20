@@ -296,21 +296,27 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     heroes = heroes_team_0 + heroes_team_1
 
     # ааааа, я заколебалась писать это все
-
+    heroes_sprite = []
     i = 0
     for hero in heroes:
         board.add(hero, coordinates[i], coordinates[i + 1])
         i += 2
+        heroes_sprite.append(Hero_sprite(hero))
 
-    i = 0
+
+
+
+
     rects = []
     s_x = min(size // x_size_field * 6, size // y_size_field * 10)
-    s_y = size // y_size_field * 16 // 2
-    # for hero in heroes:
-    # rect = pygame.Rect((size + coordinates[i] * s_x, coordinates[i + 1] * s_y), (s_x, s_y))
-    # rect = pygame.draw.rect(sc, (255, 255, 255), (size, size, s_x, s_y))
-    # i += 2
-    # rects.append([hero, rect])
+    '''
+    i = 0
+    for hero in heroes:
+        rect = pygame.Rect((size + coordinates[i] * s_x, coordinates[i + 1] * s_y), (s_x, s_y))
+        rect = pygame.draw.rect(sc, (255, 255, 255), (size, size, s_x, s_y))
+        i += 2
+        rects.append([hero, rect])
+    '''
 
     while 1:
         heroes_rect = []
@@ -322,6 +328,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         main_menu()
+
+            # эту штуку нажо переделать под спрайты
             for rect in rects:
                 if rect[1].collidepoint(pos):
                     info_hero(rect[0])
