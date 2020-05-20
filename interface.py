@@ -5,7 +5,7 @@ from board import Board
 from hero import *
 
 FPS = 60
-size = 70
+size = 50
 
 # это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
@@ -315,6 +315,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         i += 2
 
     active_rect = None
+    posible_move = []
 
     while 1:
         heroes_rect = []
@@ -348,22 +349,50 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             if i.type == pygame.QUIT: exit()
             if i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
+                    for move in posible_move:
+                        if move.collidepoint(pos):
+                            for rect in rects:
+                                if rect == active_rect:
+                                    rect.move(s_x, 0)
+                    for rect in heroes_rect:
+                        if rect[1].collidepoint(pos):
+                            active_rect = rect
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         main_menu()
 
-            for rect in heroes_rect:
-                if rect[1].collidepoint(pos):
-                    active_rect = rect
-
         if active_rect is not None:
-            info_hero(active_rect[0])
-        '''
-        for rect in rects:
-            # здесь будут картинки
-            surf = pygame.Surface((size + s_x, s_x))
-            surf.fill(main_game_color)
-            sc.blit(surf, rect[1])
-        '''
+            posible_move = []
+            for i in range(len(board.field)):
+                for j in range(len(board.field[i])):
+                    if active_rect is not None:
+                        if board.field[i][j] == active_rect[0]:
+                            # право
+                            if i != y_size_field - 1:
+                                rect = pygame.Rect((size + (i + 1) * s_x, size + j * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                sc.blit(surf, rect)
+                                posible_move.append(rect)
+                            # низ
+                            if j != y_size_field - 1:
+                                rect = pygame.Rect((size + (i) * s_x, size + (j + 1) * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                sc.blit(surf, rect)
+                                posible_move.append(rect)
+                            # верх
+                            if j != 0:
+                                rect = pygame.Rect((size + (i) * s_x, size + (j - 1) * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                sc.blit(surf, rect)
+                                posible_move.append(rect)
+                            if i != 0:
+                                rect = pygame.Rect((size + (i - 1) * s_x, size + (j) * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                sc.blit(surf, rect)
+                                posible_move.append(rect)
 
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
@@ -375,6 +404,9 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             final(heroes_team_0)
         elif not heroes_team_0:
             final(heroes_team_1)
+
+        if active_rect is not None:
+            info_hero(active_rect[0])
 
         pygame.display.update()
         clock.tick(FPS)

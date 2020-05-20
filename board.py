@@ -21,7 +21,7 @@ class Board:
 
     def sizes(self):
         return [self.x_size, self.y_size]
-
+# надо переписать
     def move(self, hero, st, num):
         if 0 < num < 3:
             for i in range(self.x_size):
