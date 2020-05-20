@@ -56,6 +56,7 @@ class Board:
         else:
             self.field[x][y] = hero_1
 
+# та функция нахер не нужна
     def game(self, team):
         while True:
             # check team

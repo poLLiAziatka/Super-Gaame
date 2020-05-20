@@ -5,7 +5,7 @@ from board import Board
 from hero import *
 
 FPS = 60
-size = 65
+size = 70
 
 # это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
@@ -100,8 +100,6 @@ def main_menu():
         sc.blit(txt_button_start, (6 * size + 5, 5 * size - 5))
         sc.blit(txt_button_exit, (6 * size + 5, 6 * size))
         sc.blit(txt_name, (4 * size + 5, 2 * size))
-
-
 
         pygame.display.update()
         clock.tick(FPS)
@@ -235,10 +233,16 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
 # у меня не работает голова, чтобы написать формулы для поля
 # я тупой пенечек, что вы от меня хотите
 def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
+    class Hero_sprite(pygame.sprite.Sprite):
+        def __init__(self, hero):
+            hero: Hero
+            pygame.sprite.Sprite.__init__(self)
+            self.image = pygame.image.load(hero.image)
+            self.rect = self.image.get_rect(center=(x, 0))
+
     def info_hero(hero):
         f1 = pygame.font.SysFont('serif', size // 2)
         f2 = pygame.font.SysFont('serif', size // 4)
-
 
         txt_hero = f1.render('hero', 1, main_game_color)
         txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
@@ -255,11 +259,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.blit(txt_ag, (size * 11, size * 5))
         sc.blit(txt_int, (size * 11, int(size * 5.5)))
 
-
-
     if not coordinates:
-        coordinates = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 1, 2, 2, 3, 2, 4, 2, 5, 2,
-                       6, 3, 1, 3, 2, 3, 4, 3, 5, 3, 6, 4, 1, 4, 2, 4, 3, 4, 5, 4, 6, 5, 1]
+        coordinates = [1, 1, 1, 2, 1, 3, 1, 4, 2, 1, 2, 2, 2, 3, 2, 4, 3, 1, 3, 2, 3, 3, 3, 4, 4, 1, 4, 2, 4, 3, 4, 4]
     board = Board(x_size_field, y_size_field)
     heroes_team_0 = []
     heroes_team_1 = []
@@ -303,14 +304,16 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
     i = 0
     rects = []
-    s_x = size * 7 // x_size_field
-    s_y = size * 7 // y_size_field
-    for hero in heroes:
-        rect = pygame.Rect((size + coordinates[i] * s_x, coordinates[i + 1] * s_y), (s_x, s_y))
-        i += 2
-        rects.append([hero, rect])
+    s_x = min(size // x_size_field * 6, size // y_size_field * 10)
+    s_y = size // y_size_field * 16 // 2
+    # for hero in heroes:
+    # rect = pygame.Rect((size + coordinates[i] * s_x, coordinates[i + 1] * s_y), (s_x, s_y))
+    # rect = pygame.draw.rect(sc, (255, 255, 255), (size, size, s_x, s_y))
+    # i += 2
+    # rects.append([hero, rect])
 
     while 1:
+        heroes_rect = []
         sc.fill(background_color)
         pos = pygame.mouse.get_pos()
         for i in pygame.event.get():
@@ -324,16 +327,27 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                     info_hero(rect[0])
 
         for i in range(x_size_field + 1):
-            pygame.draw.line(sc, main_game_color, [(i + 1) * s_x + size, s_y], [(i + 1) * s_x + size, 10 * s_y], 3)
+            pygame.draw.line(sc, main_game_color, [i * s_x + size, size], [i * s_x + size, (y_size_field + 1) * s_x], 3)
 
         for i in range(y_size_field + 1):
-            pygame.draw.line(sc, main_game_color, [s_x + size, (i + 1) * s_y], [9 * s_x + size, (i + 1) * s_y], 3)
-
+            pygame.draw.line(sc, main_game_color, [size, i * s_x + size], [(x_size_field + 1) * s_x, size + i * s_x], 3)
+        """
         for rect in rects:
             # здесь будут картинки
             surf = pygame.Surface((size + s_x, s_y))
             surf.fill(main_game_color)
             sc.blit(surf, rect[1])
+        """
+        '''
+        for i in range(len(board.field)):
+            for j in range(len(board.field[i])):
+                if board.field[i][j] in heroes:
+                    hero_img = pygame.image.load(board.field[i][j].image)
+                    hero_rect = hero_img.get_rect(bottomright=(s_x, s_x))
+                    # heroes_rect.append((hero_rect, ))
+                    sc.blit(hero_img, hero_img)
+        '''
+
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
         text_continue = f3.render('   Finish', 1, background_color)
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
@@ -375,6 +389,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-# game('lhbvf', 'sdhhjh', 8, 9, [])
-#  final('Дрима тима')
-main_menu()
+game('lhbvf', 'sdhhjh', 5, 6, [])
+# final('Дрима тима')
+# main_menu()
