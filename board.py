@@ -79,6 +79,8 @@ class Board:
         defending.bias = defending.healf / 5 * 8
 
         if random.randint(0, 100) in [x for x in range(defending.bias)]:
+            i = random.randint(0, 1)
+            attacking.skills[i]
             attacking.attack = 0
 
         attacking.sk_pr = attacking._int / 5 * 7
@@ -87,10 +89,15 @@ class Board:
             i = random.randint(0, 1)
             attacking.skills[i]
 
+        attacking.sd = attacking._ag / 5 * 6
+        if random.randint(0, 100) in [x for x in range(attacking.sd)]:
+            i = random.randint(0, 1)
+            attacking.skills[i]
+
         defending.healf -= attacking.attack
 
         defending.attack = random.randint(1, defending._st)
-        #  нужно проверить, из одной команды герои или нет, и если из одной, то сражения не будет
+        #  оно как-то работает, но я хз как
 
 #  board должен знать кто ходит
 # проверить пустая ли клетка, если на клетке враг - сражение:

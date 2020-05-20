@@ -61,6 +61,12 @@ class Engineer(Intelligency):
     def image(self):
         return Image.open('1.jpg')
 
+    def __str__(self):
+        return 'Инженер'
+
+    def description(self):
+        return 'Неуверенный в себе, непутевый, меланхоличный инженер НИИ, который разрабатывает секретные сыворотки и проводит генетические эксперименты. Часто он становится героем неловких, а иногда опасных ситуаций, или просто рассуждает о жизни'
+
 
 class Leader_iron_sleeves(Intelligency):
     def __init__(self, _st, _ag, _int, team):
@@ -88,6 +94,12 @@ class Leader_iron_sleeves(Intelligency):
     def image(self):
         return Image.open('2.jpg')
 
+    def __str__(self):
+        return 'Глава ОПГ железные рукава'
+
+    def description(self):
+        return 'ОПГ «Железные рукава», которая помимо преступной деятельности занимается и музыкальной. Их дело пытается расследовать ведущий передачи «Загадка дыры», но не добивается успеха'
+
 
 class Katamaronov(Agility):
     def __init__(self, _st, _ag, _int, team):
@@ -107,6 +119,9 @@ class Katamaronov(Agility):
     def __str__(self):
         return 'Катамаранов'
 
+    def description(self):
+        return 'Водитель асфальтового катка, одноклассник инженера и алкоголик Игорь Катамаранов. Его жену Зинку Кашину, управляющую отделения нейротрансплантологии НИИ, засосало в трубу.'
+
 
 class Rosa_robot(Agility):
     def __init__(self, _st, _ag, _int, team):
@@ -122,6 +137,12 @@ class Rosa_robot(Agility):
 
     def image(self):
         return Image.open('4.jpg')
+
+    def __str__(self):
+        return 'Роза Робот'
+
+    def description(self):
+        return 'Рок-группа «Багровый фантомас», состоящая из Розы Робота и Шершняги. Герои, чей образ основан на фанатах российской рок-музыки 90-х, мечтают стать популярными и разговаривают на молодёжном сленге, постоянно употребляя слово «блин»'
 
 
 class Shershnyga(Strength):
@@ -139,6 +160,12 @@ class Shershnyga(Strength):
     def image(self):
         return Image.open('5.jpg')
 
+    def __str__(self):
+        return 'Шершняга'
+
+    def description(self):
+        return 'Рок-группа «Багровый фантомас», состоящая из Розы Робота и Шершняги. Герои, чей образ основан на фанатах российской рок-музыки 90-х, мечтают стать популярными и разговаривают на молодёжном сленге, постоянно употребляя слово «блин»'
+
 
 class Journalist(Strength):
     def __init__(self, _st, _ag, _int, team):
@@ -154,3 +181,9 @@ class Journalist(Strength):
 
     def image(self):
         return Image.open('6.jpg')
+
+    def __str__(self):
+        return 'Журналист'
+
+    def description(self):
+        return 'Ведущий телепередачи «Сдохни или умри». «Сдохни или умри» — это пародия на шоу о выживании в дикой природе, только здесь герой пытается выжить в метро, канализации или лесу с «заброшенными собаками»'
