@@ -237,7 +237,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         def __init__(self, hero):
             hero: Hero
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load(hero.image)
+            self.image = pygame.image.load(hero.image())
             self.rect = self.image.get_rect(center=(x, 0))
 
     def info_hero(hero):
@@ -397,6 +397,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game('lhbvf', 'sdhhjh', 5, 6, [])
+# game('lhbvf', 'sdhhjh', 5, 6, [])
 # final('Дрима тима')
-# main_menu()
+main_menu()
