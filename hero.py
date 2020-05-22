@@ -59,13 +59,18 @@ class Engineer(Intelligency):
         self._int -= 2
 
     def image(self):
-        return Image.open('1.jpg')
+        return "1.jpg"
 
     def __str__(self):
         return 'Инженер'
 
     def description(self):
-        return 'Неуверенный в себе, непутевый, меланхоличный инженер НИИ, который разрабатывает секретные сыворотки и проводит генетические эксперименты. Часто он становится героем неловких, а иногда опасных ситуаций, или просто рассуждает о жизни'
+        #st = '''Неуверенный в себе, непутевый, меланхоличный инженер НИИ, который : разрабатывает секретные сыворотки и
+       # проводит : генетические эксперименты. Часто он становится героем :  неловких, а иногда опасных ситуаций, или :
+        # просто рассуждает о жизни'''
+        #lst = st.split(':')
+        st = 'Меланхоличный, разрабатывает секретные сыворотки'
+        return st
 
 
 class Leader_iron_sleeves(Intelligency):
@@ -92,13 +97,14 @@ class Leader_iron_sleeves(Intelligency):
             self.freeze += 2
 
     def image(self):
-        return Image.open('2.jpg')
+        return "2.jpg"
 
     def __str__(self):
         return 'Глава ОПГ железные рукава'
 
     def description(self):
-        return 'ОПГ «Железные рукава», которая помимо преступной деятельности занимается и музыкальной. Их дело пытается расследовать ведущий передачи «Загадка дыры», но не добивается успеха'
+        st = 'Руководит ОПГ, за которой следит Журналист'
+        return st
 
 
 class Katamaronov(Agility):
@@ -114,15 +120,14 @@ class Katamaronov(Agility):
         self.health -= damage
 
     def image(self):
-        return Image.open('3.jpg')
+        return "3.jpg"
 
     def __str__(self):
         return 'Катамаранов'
-    def team(self):
-        return self.team
 
     def description(self):
-        return 'Водитель асфальтового катка, одноклассник инженера и алкоголик Игорь Катамаранов. Его жену Зинку Кашину, управляющую отделения нейротрансплантологии НИИ, засосало в трубу.'
+        st = 'Алкоголик, одноклассник инженера'
+        return st
 
 
 class Rosa_robot(Agility):
@@ -138,16 +143,14 @@ class Rosa_robot(Agility):
             enemy_hero.intel = int(enemy_hero.intel * 0.85)
 
     def image(self):
-        return Image.open('4.jpg')
+        return "4.jpg"
 
     def __str__(self):
         return 'Роза Робот'
 
-    def team(self):
-        return self.team
-
     def description(self):
-        return f'Рок-группа «Багровый фантомас», состоящая из Розы Робота и Шершняги. Герои, чей образ основан на фанатах российской рок-музыки 90-х, мечтают стать популярными и разговаривают на молодёжном сленге, постоянно употребляя слово «блин»'
+        st = 'Рок-группа "Багровый фантомас, друг Шершняги"'
+        return st
 
 
 class Shershnyga(Strength):
@@ -163,13 +166,14 @@ class Shershnyga(Strength):
             self.freeze += 1
 
     def image(self):
-        return Image.open('5.jpg')
+        return "5.jpg"
 
     def __str__(self):
         return 'Шершняга'
 
     def description(self):
-        return 'Рок-группа «Багровый фантомас», состоящая из Розы Робота и Шершняги. Герои, чей образ основан на фанатах российской рок-музыки 90-х, мечтают стать популярными и разговаривают на молодёжном сленге, постоянно употребляя слово «блин»'
+        st = 'Рок-группа "Багровый фантомас, друг Розы"'
+        return st
 
 
 class Journalist(Strength):
@@ -185,10 +189,11 @@ class Journalist(Strength):
             _ag += 2
 
     def image(self):
-        return Image.open('6.jpg')
+        return "6.jpg"
 
     def __str__(self):
         return 'Журналист'
 
     def description(self):
-        return 'Ведущий телепередачи «Сдохни или умри». «Сдохни или умри» — это пародия на шоу о выживании в дикой природе, только здесь герой пытается выжить в метро, канализации или лесу с «заброшенными собаками»'
+        st = 'Ведущий телепередачи "Загадка дыры"'
+        return st
