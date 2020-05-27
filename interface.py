@@ -237,6 +237,10 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
 # у меня не работает голова, чтобы написать формулы для поля
 # я тупой пенечек, что вы от меня хотите
 def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
+    possible_move = []
+    heroes_rect = []
+    rects = []
+    active_team = name_team1
     for i in range(len(coordinates)):
         coordinates[i] -= 1
 
@@ -266,6 +270,14 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.blit(txt_st, (size * 11, int(size * 4.5)))
         sc.blit(txt_ag, (size * 11, size * 5))
         sc.blit(txt_int, (size * 11, int(size * 5.5)))
+
+    # здесь должен быть heal и ability to move(возможно не здесь)
+    def step():
+        global active_team
+        if active_team == name_team1:
+            active_team = name_team2
+        else:
+            active_team = name_team1
 
     if not coordinates:
         coordinates = [1, 1, 1, 2, 1, 3, 1, 4, 2, 1, 2, 2, 2, 3, 2, 4, 3, 1, 3, 2, 3, 3, 3, 4, 4, 1, 4, 2, 4, 3, 4, 4]
@@ -314,9 +326,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         i += 2
 
     active_rect = None
-    possible_move = []
-    heroes_rect = []
-    rects = []
+
     while 1:
 
         sc.fill(background_color)
@@ -393,10 +403,11 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                             for rect in heroes_rect:
                                 if rect == active_rect:
                                     print(rect[0])
-                                    board.move(rect[0], move[1], 1)
-                                    possible_move = []
-                                    active_rect = None
-                                    break
+                                    if rect[0].team == active_team:
+                                        board.move(rect[0], move[1], 1)
+                                        step
+                                        active_rect = None
+                                        heroes_rect = []
 
                     for rect in heroes_rect:
                         if rect[1].collidepoint(pos):
@@ -407,7 +418,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
         f4 = pygame.font.SysFont('serif', size // 10 * 6)
         text_continue = f3.render('  Finish', 1, background_color)
-        text_team = f4.render('Ход команды', 1, team1_color)
+        text_team = f4.render(f'Ход команды: {active_team}', 1, team1_color)
         sc.blit(text_team, (size, size // 6))
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
@@ -451,6 +462,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game('lhbvf', 'sdhhjh', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+game('1111', '22222', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
 # main_menu()

@@ -29,20 +29,16 @@ class Board:
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
-                            self.check_move(i + num , j, hero)  #  self.check_move(i + num - 1, j, hero)
-                            self.field[i][j] = 0
+                            self.check_move(i + num , j, hero, i, j)  #  self.check_move(i + num - 1, j, hero)
                             break
                         elif st == 'налево':
-                            self.check_move(i - num, j, hero)
-                            self.field[i][j] = 0
+                            self.check_move(i - num, j, hero, i, j)
                             break
                         elif st == 'вверх':
-                            self.check_move(i, j - num, hero)
-                            self.field[i][j] = 0
+                            self.check_move(i, j - num, hero, i, j)
                             break
                         elif st == 'вниз':
-                            self.check_move(i,  j + num, hero)
-                            self.field[i][j] = 0
+                            self.check_move(i,  j + num, hero, i, j)
                             break
                         else:
                             print('Неправильно задана команда')
@@ -55,12 +51,16 @@ class Board:
         else:
             return False
 
-    def check_move(self, x, y, hero_1):
+    def check_move(self, x, y, hero_1, i, j):
         print(x, y)
+        print(self.field[x][y])
         if self.field[x][y] != 0:
-            self.battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
-        else:
+            self.field[i][j] = hero_1
+            self.battle(hero_1, self.field[x][y])# сначала, кто встал на клетку, потом кто был там
+        elif self.field[x][y] == 0:
             self.field[x][y] = hero_1
+            self.field[i][j] = 0
+
 
     def __str__(self):
         return str(self.field)
@@ -86,6 +86,8 @@ class Board:
                 print('Team 2 win')
 
     def battle(self, attacking, defending):
+        print('oooh yeaa')
+        pass
         attacking.attack = random.randint(1, attacking._st)
         defending.bias = defending.health / 5 * 8
 

@@ -10,7 +10,9 @@ class Hero:
         self._st = _st
         self._ag = _ag
         self._int = _int
+        self.team = team
         self.health = self._st * 25
+        self.start_heal = self._st * 25
         self.p_iv = self._ag / 50 * 80
         self.p_mag = self._int / 50 * 70
         self.freeze = 0
