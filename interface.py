@@ -91,7 +91,7 @@ def main_menu():
         pygame.draw.rect(sc, additional_game_color, (5 * size, 5 * size, 4 * size, 1 * size))
         pygame.draw.rect(sc, additional_game_color, (5 * size, 6 * size, 4 * size, 1 * size))
 
-        f1 = pygame.font.SysFont('serif', size // 10 * 17)
+        f1 = pygame.font.SysFont('serif', size // 10 * 16)
         f2 = pygame.font.SysFont('serif', size // 10 * 10)
         txt_name = f1.render('Plапенко', 1, background_color)
         txt_button_start = f2.render('Play', 1, background_color)
@@ -448,6 +448,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game('lhbvf', 'sdhhjh', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+# game('lhbvf', 'sdhhjh', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
-# main_menu()
+main_menu()
