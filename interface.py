@@ -259,8 +259,12 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         txt_info = f2.render(hero.description(), 1, (10, 40, 140))
 
         # тут должна быть картинка
+        image = pygame.image.load(hero.image()).convert_alpha()
+        new_image = pygame.transform.scale(image, (size * 2, size * 2))
+
         pygame.draw.rect(sc, (0, 0, 0), (int(size * 11.5), int(size * 1.5), size * 2, size * 2), 1)
         # sc.blit(twt_team, (size * 12, size // 3))
+        sc.blit(new_image, (int(size * 11.5), int(size * 1.5)))
         sc.blit(txt_info, (size * 10, size * 6))
         sc.blit(txt_hero, (size * 10, size // 2))
         sc.blit(txt_health, (size * 11, size * 4))
@@ -332,17 +336,14 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         for i in range(len(board.field)):
             for j in range(len(board.field[i])):
                 if board.field[i][j] in heroes:
-                    '''
-                    hero_img = pygame.image.load(board.field[i][j].image)
-                    hero_rect = hero_img.get_rect(bottomright=(s_x, s_x))
-                    # heroes_rect.append((hero_rect, ))
-                    sc.blit(hero_img, hero_img)
-                    '''
+                    image = pygame.image.load(board.field[i][j].image()).convert_alpha()
+                    new_image = pygame.transform.scale(image, (s_x, s_x))
                     rect = pygame.Rect((size + i * s_x, size + j * s_x), (s_x, s_x))
                     surf = pygame.Surface((s_x, s_x))
                     surf.fill(main_game_color)
                     sc.blit(surf, rect)
                     heroes_rect.append([board.field[i][j], rect])
+                    sc.blit(new_image, (size + i * s_x, size + j * s_x))
                     rects.append(rect)
 
         for i in pygame.event.get():
@@ -396,7 +397,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
-        text_continue = f3.render('   Finish', 1, background_color)
+        text_continue = f3.render('  Finish', 1, background_color)
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
 
