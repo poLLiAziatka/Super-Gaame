@@ -12,17 +12,14 @@ class Hero:
         self._int = _int
         self.team = team
         self.health = self._st * 25
-        self.start_heal = self._st * 25
+        self.start_health = self._st * 25
         self.p_iv = self._ag / 50 * 80
         self.p_mag = self._int / 50 * 70
         self.freeze = 0
 
-    def ability_to_move(self):
-        if self.freeze == 0:
-            return True
-        else:
+    def move_freeze(self):
+        if self.freeze != 0:
             self.freeze -= 1
-            return False
 
     def heal(self):
         self.health *= 1.15

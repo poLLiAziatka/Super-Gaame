@@ -244,6 +244,20 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     for i in range(len(coordinates)):
         coordinates[i] -= 1
 
+    def step():
+        global active_team
+        if active_team == name_team1:
+            active_team = name_team2
+        else:
+            active_team = name_team1
+
+        print(active_team)
+
+        for hero in heroes:
+            if hero.health != hero.start_health:
+                hero.health()
+            hero.move_freeze()
+
     def info_hero(hero):
         f1 = pygame.font.SysFont('serif', size // 2)
         f2 = pygame.font.SysFont('serif', size // 4)
@@ -270,14 +284,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.blit(txt_st, (size * 11, int(size * 4.5)))
         sc.blit(txt_ag, (size * 11, size * 5))
         sc.blit(txt_int, (size * 11, int(size * 5.5)))
-
-    # здесь должен быть heal и ability to move(возможно не здесь)
-    def step():
-        global active_team
-        if active_team == name_team1:
-            active_team = name_team2
-        else:
-            active_team = name_team1
 
     if not coordinates:
         coordinates = [1, 1, 1, 2, 1, 3, 1, 4, 2, 1, 2, 2, 2, 3, 2, 4, 3, 1, 3, 2, 3, 3, 3, 4, 4, 1, 4, 2, 4, 3, 4, 4]
@@ -403,9 +409,9 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                             for rect in heroes_rect:
                                 if rect == active_rect:
                                     print(rect[0])
-                                    if rect[0].team == active_team:
+                                    if rect[0].team == active_team and rect[0].freeze == 0:
                                         board.move(rect[0], move[1], 1)
-                                        step
+                                        step()
                                         active_rect = None
                                         heroes_rect = []
 
