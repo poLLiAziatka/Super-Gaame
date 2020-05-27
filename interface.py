@@ -389,7 +389,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                     for move in possible_move:
                         if move[0].collidepoint(pos):
                             for rect in heroes_rect:
-
                                 if rect == active_rect:
                                     print(rect[0])
                                     board.move(rect[0], move[1], 1)
@@ -397,7 +396,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                                     active_rect = None
                                     break
 
-                    possible_move = []
                     for rect in heroes_rect:
                         if rect[1].collidepoint(pos):
                             active_rect = rect
