@@ -1,11 +1,11 @@
-# я не знаю, что тут происходит и как это хреньь вообще работает
+# я не знаю, что тут происходит и как это хреньь вообще может работает
 
 import pygame
 from board import Board
 from hero import *
 
 FPS = 60
-size = 50
+size = 70
 
 # это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
@@ -23,7 +23,7 @@ sc = pygame.display.set_mode((size * 16, size * 9))
 sc.fill(background_color)
 
 
-# это ввод, работает и хорошо
+# это ввод, позаимствовали у какого-то классного человека, работает и хорошо
 class InputBox:
     def __init__(self, x, y, w, h, text=''):
         self.rect = pygame.Rect(int(x), int(y), int(w), int(h))
@@ -71,6 +71,7 @@ class InputBox:
 
 
 # Главное меню
+# единственное что работает идеально
 def main_menu():
     while 1:
         sc.fill(background_color)
@@ -123,6 +124,7 @@ def team_name_and_field_size():
             elif i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        # здесь ошибка
                         name_team1 = input_box1.get()
                         name_team2 = input_box2.get()
                         x_size_field = int(input_box3.get())
@@ -236,15 +238,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     for i in range(len(coordinates)):
         coordinates[i] -= 1
 
-    '''
-    class Hero_sprite(pygame.sprite.Sprite):
-        def __init__(self, hero):
-            hero: Hero
-            pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load(hero.image)
-            self.rect = self.image.get_rect(center=(x, 0))
-    '''
-
     def info_hero(hero):
         f1 = pygame.font.SysFont('serif', size // 2)
         f2 = pygame.font.SysFont('serif', size // 4)
@@ -311,7 +304,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     # ааааа, я заколебалась писать это все
 
     i = 0
-
+    #  вот здесь фигня какая-то
     s_x = min(size // x_size_field * 6, size // y_size_field * 10)
     # s_y = size // y_size_field * 10
     for hero in heroes:
@@ -319,14 +312,15 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         i += 2
 
     active_rect = None
-    posible_move = []
-
+    possible_move = []
+    heroes_rect = []
+    rects = []
     while 1:
-        heroes_rect = []
-        rects = []
+
         sc.fill(background_color)
         pos = pygame.mouse.get_pos()
 
+        # из-за фигни выше не правильно отрисовывается
         for i in range(x_size_field + 1):
             pygame.draw.line(sc, main_game_color, [i * s_x + size, size], [i * s_x + size, (y_size_field + 1) * s_x], 3)
 
@@ -338,63 +332,77 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                 if board.field[i][j] in heroes:
                     image = pygame.image.load(board.field[i][j].image()).convert_alpha()
                     new_image = pygame.transform.scale(image, (s_x, s_x))
+
                     rect = pygame.Rect((size + i * s_x, size + j * s_x), (s_x, s_x))
                     surf = pygame.Surface((s_x, s_x))
-                    surf.fill(main_game_color)
+
+                    surf.blit(new_image, (0, 0))
                     sc.blit(surf, rect)
+
                     heroes_rect.append([board.field[i][j], rect])
-                    sc.blit(new_image, (size + i * s_x, size + j * s_x))
                     rects.append(rect)
 
-        for i in pygame.event.get():
-            if i.type == pygame.QUIT: exit()
-            if i.type == pygame.MOUSEBUTTONDOWN:
-                if i.button == 1:
-                    for move in posible_move:
-                        if move.collidepoint(pos):
-                            for rect in rects:
-                                if rect == active_rect:
-                                    rect.move(s_x, 0)
-                    for rect in heroes_rect:
-                        if rect[1].collidepoint(pos):
-                            active_rect = rect
-                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
-                        main_menu()
-
         if active_rect is not None:
-            posible_move = []
+            possible_move = []
             for i in range(len(board.field)):
                 for j in range(len(board.field[i])):
                     if active_rect is not None:
+                        # поправить правую стенку
                         if board.field[i][j] == active_rect[0]:
                             # право
                             if i != y_size_field - 1:
                                 rect = pygame.Rect((size + (i + 1) * s_x, size + j * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
                                 sc.blit(surf, rect)
-                                posible_move.append(rect)
+                                possible_move.append([rect, 'направо'])
                             # низ
                             if j != y_size_field - 1:
                                 rect = pygame.Rect((size + (i) * s_x, size + (j + 1) * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
                                 sc.blit(surf, rect)
-                                posible_move.append(rect)
+                                possible_move.append([rect, 'вниз'])
                             # верх
                             if j != 0:
                                 rect = pygame.Rect((size + (i) * s_x, size + (j - 1) * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
                                 sc.blit(surf, rect)
-                                posible_move.append(rect)
+                                possible_move.append([rect, 'вверх'])
                             if i != 0:
                                 rect = pygame.Rect((size + (i - 1) * s_x, size + (j) * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
                                 sc.blit(surf, rect)
-                                posible_move.append(rect)
+                                possible_move.append([rect, 'налево'])
 
+        for i in pygame.event.get():
+            if i.type == pygame.QUIT:
+                exit()
+            if i.type == pygame.MOUSEBUTTONDOWN:
+                if i.button == 1:
+                    for move in possible_move:
+                        if move[0].collidepoint(pos):
+                            for rect in heroes_rect:
+
+                                if rect == active_rect:
+                                    print(rect[0])
+                                    board.move(rect[0], move[1], 1)
+                                    possible_move = []
+                                    active_rect = None
+                                    break
+
+                    possible_move = []
+                    for rect in heroes_rect:
+                        if rect[1].collidepoint(pos):
+                            active_rect = rect
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        main_menu()
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
         text_continue = f3.render('  Finish', 1, background_color)
@@ -440,6 +448,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game('lhbvf', 'sdhhjh', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+game('lhbvf', 'sdhhjh', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
 # main_menu()

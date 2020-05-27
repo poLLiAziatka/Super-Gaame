@@ -21,6 +21,7 @@ class Board:
 
     def sizes(self):
         return [self.x_size, self.y_size]
+
 # надо переписать
     def move(self, hero, st, num):
         if 0 < num < 3:
@@ -28,19 +29,24 @@ class Board:
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
-                            self.field[i][j] = 0
                             self.check_move(i + num, j, hero)
+                            self.field[i][j] = 0
+                            break
                         elif st == 'налево':
-                            self.field[i][j] = 0
                             self.check_move(i - num, j, hero)
+                            self.field[i][j] = 0
+                            break
                         elif st == 'вверх':
-                            self.field[i][j] = 0
-                            self.check_move(i, j + num, hero)
-                        elif st == 'вниз':
-                            self.field[i][j] = 0
                             self.check_move(i, j - num, hero)
+                            self.field[i][j] = 0
+                            break
+                        elif st == 'вниз':
+                            self.check_move(i,  j + num, hero)
+                            self.field[i][j] = 0
+                            break
                         else:
                             print('Неправильно задана команда')
+
         else:
             print('Неправильное число')
 
@@ -51,12 +57,17 @@ class Board:
             return False
 
     def check_move(self, x, y, hero_1):
+        print(x, y)
         if self.field[x][y] != 0:
             self.battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
         else:
             self.field[x][y] = hero_1
 
-# та функция нахер не нужна
+    def __str__(self):
+        return str(self.field)
+
+
+# эта функция нахер не нужна
     def game(self, team):
         while True:
             # check team
