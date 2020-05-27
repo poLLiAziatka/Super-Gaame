@@ -29,7 +29,7 @@ class Board:
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
-                            self.check_move(i + num, j, hero)
+                            self.check_move(i + num , j, hero)  #  self.check_move(i + num - 1, j, hero)
                             self.field[i][j] = 0
                             break
                         elif st == 'налево':
@@ -46,7 +46,6 @@ class Board:
                             break
                         else:
                             print('Неправильно задана команда')
-
         else:
             print('Неправильное число')
 

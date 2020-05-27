@@ -206,12 +206,14 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
         f1 = pygame.font.SysFont('serif', size // 10 * 3)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
         f3 = pygame.font.SysFont('serif', size // 10 * 7)
+
         team1_text = f1.render(name_team1, 1, team1_color)
         team2_text = f1.render(name_team2, 1, team2_color)
         text_continue = f3.render(' Continue', 1, background_color)
 
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (8 * size, size))
+
         j = 1
         for character in characters:
             j += 1
@@ -403,7 +405,10 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                         main_menu()
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
+        f4 = pygame.font.SysFont('serif', size // 10 * 6)
         text_continue = f3.render('  Finish', 1, background_color)
+        text_team = f4.render('Ход команды', 1, team1_color)
+        sc.blit(text_team, (size, size // 6))
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
 
@@ -446,6 +451,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-# game('lhbvf', 'sdhhjh', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+game('lhbvf', 'sdhhjh', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
-main_menu()
+# main_menu()
