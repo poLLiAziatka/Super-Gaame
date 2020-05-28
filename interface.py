@@ -245,12 +245,12 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         coordinates[i] -= 1
 
     def step():
-        global active_team
+        nonlocal active_team
+        # print(active_team)
         if active_team == name_team1:
             active_team = name_team2
         else:
             active_team = name_team1
-
         print(active_team)
 
         for hero in heroes:
@@ -368,7 +368,9 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                         # поправить правую стенку
                         if board.field[i][j] == active_rect[0]:
                             # право
-                            if i != y_size_field - 1:
+                            if i != x_size_field - 1:
+                                #print(i)
+                                #print(x_size_field)
                                 rect = pygame.Rect((size + (i + 1) * s_x, size + j * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))

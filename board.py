@@ -24,24 +24,27 @@ class Board:
 
 # надо переписать
     def move(self, hero, st, num):
-        if 0 < num < 3:
+        flag = False
+        if 0 < num < 2:
             for i in range(self.x_size):
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
-                            self.check_move(i + num , j, hero, i, j)  #  self.check_move(i + num - 1, j, hero)
-                            break
+                            self.check_move(i + num, j, hero, i, j)  #  self.check_move(i + num - 1, j, hero)
+                            flag = True
                         elif st == 'налево':
                             self.check_move(i - num, j, hero, i, j)
-                            break
+                            flag = True
                         elif st == 'вверх':
                             self.check_move(i, j - num, hero, i, j)
-                            break
+                            flag = True
                         elif st == 'вниз':
                             self.check_move(i,  j + num, hero, i, j)
-                            break
+                            flag = True
                         else:
                             print('Неправильно задана команда')
+                if flag:
+                    break
         else:
             print('Неправильное число')
 
