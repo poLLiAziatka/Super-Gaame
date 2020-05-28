@@ -260,7 +260,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
         for hero in heroes:
             if hero.health != hero.start_health:
-                hero.health()
+                hero.heal()
             hero.move_freeze()
 
     def info_hero(hero):
@@ -270,7 +270,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         txt_hero = f1.render(str(hero), 1, main_game_color)
         twt_team = f2.render(f'команда: {hero.team}', 1, main_game_color)
         txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
-        pygame.draw.rect(sc, (255, 0, 0), (int(size * 12.5), size * 4, hero.health // 4, size // 4), 1)
+        pygame.draw.rect(sc, (255, 0, 0), (int(size * 12.5), size * 4, hero.health, size // 4), 1)
         txt_st = f2.render(f'Сила: {hero._st} ', 1, additional_game_color)
         txt_ag = f2.render(f'Ловкость: {hero._ag} ', 1, additional_game_color)
         txt_int = f2.render(f'Интеллект: {hero._int} ', 1, additional_game_color)
@@ -357,13 +357,14 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                     new_image = pygame.transform.scale(image, (s_x, s_x))
 
                     rect = pygame.Rect((size + i * s_x, size + j * s_x), (s_x, s_x))
-                    surf = pygame.Surface((s_x, s_x))
+                    if board.field[i][j].health > 0:
+                        surf = pygame.Surface((s_x, s_x))
 
-                    surf.blit(new_image, (0, 0))
-                    sc.blit(surf, rect)
+                        surf.blit(new_image, (0, 0))
+                        sc.blit(surf, rect)
 
-                    heroes_rect.append([board.field[i][j], rect])
-                    rects.append(rect)
+                        heroes_rect.append([board.field[i][j], rect])
+                        rects.append(rect)
 
         if active_rect is not None:
             possible_move = []
@@ -475,6 +476,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-# game('1111', '22222', 7, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+game('1111', '22222', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
-main_menu()
+# main_menu()

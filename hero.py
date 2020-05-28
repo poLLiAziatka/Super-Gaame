@@ -11,7 +11,7 @@ class Hero:
         self._ag = _ag
         self._int = _int
         self.team = team
-        self.health = self._st * 25
+        self.health = self._st * 5
         self.start_health = self._st * 25
         self.p_iv = self._ag / 50 * 80
         self.p_mag = self._int / 50 * 70
@@ -22,7 +22,7 @@ class Hero:
             self.freeze -= 1
 
     def heal(self):
-        self.health *= 1.15
+        self.health += 1
 
 
 class Strength(Hero):
@@ -52,9 +52,9 @@ class Engineer(Intelligency):
         self.skills = [self.enemy_block, self.degrade]
 
     def enemy_block(self, enemy):
-        self.freeze += 1
+        enemy.freeze += 1
 
-    def degrade(self, hero):
+    def degrade(self, enemy):
         self._int -= 2
 
     def image(self):
@@ -64,10 +64,6 @@ class Engineer(Intelligency):
         return 'Инженер'
 
     def description(self):
-        #st = '''Неуверенный в себе, непутевый, меланхоличный инженер НИИ, который : разрабатывает секретные сыворотки и
-       # проводит : генетические эксперименты. Часто он становится героем :  неловких, а иногда опасных ситуаций, или :
-        # просто рассуждает о жизни'''
-        #lst = st.split(':')
         st = 'Меланхоличный, разрабатывает секретные сыворотки'
         return st
 
@@ -77,10 +73,10 @@ class Leader_iron_sleeves(Intelligency):
         super().__init__(_st, _ag, _int, team)
         self.skills = [self.double_damage, self.freezing]
 
-    def double_damage(self):
+    def double_damage(self, enemy):
         self.damage *= 2
 
-    def freezing(self):
+    def freezing(self, enemy):
         lst_freeze = []
         x, y = Board.sizes()
         downx = x - 2
@@ -111,10 +107,10 @@ class Katamaronov(Agility):
         super().__init__(_st, _ag, _int, team)
         self.skills = [self.skipidar, self.troubles_with_head]
 
-    def skipidar(self):
+    def skipidar(self, enemy):
         self.damage = int(self.damage * 1.15)
 
-    def troubles_with_head(self):
+    def troubles_with_head(self, enemy):
         damage = self.damage + randint(- self.p_num, self.p_num)
         self.health -= damage
 
@@ -157,8 +153,8 @@ class Shershnyga(Strength):
         super().__init__(_st, _ag, _int, team)
         self.skills = [self.rosa_beats, self.degrade]
 
-    def degrade(self, hero, _st):
-        _st *= 1.15
+    def degrade(self, hero):
+        self._st *= 1.15
 
     def rosa_beats(self, enemy_hero):
         if enemy_hero == Rosa_robot:
@@ -183,9 +179,9 @@ class Journalist(Strength):
     def degrade(self, hero):
         self.damage *= 0.7
 
-    def run(self, hero, _ag):
-        if _ag <= 7:
-            _ag += 2
+    def run(self, hero):
+        if self._ag <= 7:
+            self._ag += 2
 
     def image(self):
         return "6.jpg"

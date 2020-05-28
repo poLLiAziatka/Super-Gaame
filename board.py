@@ -1,6 +1,42 @@
 import random
 
 
+def battle(attacking, defending):
+    global Hero
+    attacking.attack = random.randint(attacking.damage // 2, attacking.damage)
+    print(attacking.attack)
+    defending.bias = defending.health / 100
+    print(defending.bias)
+
+    if random.randint(0, 100) in [x for x in range(int(defending.bias))]:
+        print('Уворот')
+        i = random.randint(0, 1)
+        attacking.attack = 0
+
+    attacking.sk_pr = attacking._int / 5 * 7
+    print(attacking.sk_pr)
+
+    if random.randint(0, 100) in [x for x in range(int(attacking.sk_pr))]:
+
+        i = random.randint(0, 1)
+        attacking.skills[i](defending)
+        print(attacking.skills[i])
+    '''
+    attacking.sd = attacking._ag / 5 * 6
+    print(attacking.sd )
+    if random.randint(0, 100) in [x for x in range(int(attacking.sd))]:
+        print()
+        i = random.randint(0, 1)
+        attacking.skills[i]
+    '''
+    print(defending.health)
+    print(attacking.attack)
+    defending.health -= attacking.attack
+    print(defending.health)
+
+    defending.attack = random.randint(1, defending._st)
+
+
 class Board:
     def __init__(self, x_size, y_size):
         self.field = [[0] * y_size for _ in range(x_size)]
@@ -26,24 +62,28 @@ class Board:
         flag = False
         if 0 < num < 2:
             for i in range(self.x_size):
+                if flag:
+                    break
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
                             self.check_move(i + num, j, hero, i, j)  # self.check_move(i + num - 1, j, hero)
                             flag = True
+                            break
                         elif st == 'налево':
                             self.check_move(i - num, j, hero, i, j)
                             flag = True
+                            break
                         elif st == 'вверх':
                             self.check_move(i, j - num, hero, i, j)
                             flag = True
+                            break
                         elif st == 'вниз':
                             self.check_move(i, j + num, hero, i, j)
                             flag = True
+                            break
                         else:
                             print('Неправильно задана команда')
-                if flag:
-                    break
         else:
             print('Неправильное число')
 
@@ -56,9 +96,9 @@ class Board:
     def check_move(self, x, y, hero_1, i, j):
         print(x, y)
         print(self.field[x][y])
-        if self.field[x][y] != 0:
+        if self.field[x][y] != 0 and self.field[x][y].team != self.field[i][j].team :
             self.field[i][j] = hero_1
-            self.battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
+            battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
         elif self.field[x][y] == 0:
             self.field[x][y] = hero_1
             self.field[i][j] = 0
@@ -85,37 +125,6 @@ class Board:
             elif count_1 == 0:
                 print('Team 2 win')
 
-    def battle(self, attacking, defending):
-        print('oooh yeaa')
-        attacking.attack = random.randint(1, attacking._st)
-        print(attacking.attack)
-        defending.bias = defending.health / 5 * 8
-        print(defending.bias)
-
-        if random.randint(0, 100) in [x for x in range(int(defending.bias))]:
-            print('Уворот')
-            i = random.randint(0, 1)
-            attacking.skills[i]
-            attacking.attack = 0
-
-        attacking.sk_pr = attacking._int / 5 * 7
-        print(attacking.sk_pr)
-
-        if random.randint(0, 100) in [x for x in range(int(attacking.sk_pr))]:
-            print('Skill')
-            i = random.randint(0, 1)
-            attacking.skills[i]
-        '''
-        attacking.sd = attacking._ag / 5 * 6
-        print(attacking.sd )
-        if random.randint(0, 100) in [x for x in range(int(attacking.sd))]:
-            print()
-            i = random.randint(0, 1)
-            attacking.skills[i]
-        '''
-        defending.health -= attacking.attack
-
-        defending.attack = random.randint(1, defending._st)
         #  оно как-то работает, но я хз как
 
 #  board должен знать кто ходит
