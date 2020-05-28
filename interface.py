@@ -119,8 +119,7 @@ def team_name_and_field_size():
     input_box1 = InputBox(size * 7, size, size * 6, size)
     input_box2 = InputBox(size * 7, size * 2, size * 6, size)
     input_box3 = InputBox(size * 7, size * 3, size * 6, size)
-    input_box4 = InputBox(size * 7, size * 4, size * 6, size)
-    input_boxes = [input_box1, input_box2, input_box3, input_box4]
+    input_boxes = [input_box1, input_box2, input_box3]
     while 1:
         pos = pygame.mouse.get_pos()
 
@@ -130,14 +129,15 @@ def team_name_and_field_size():
                 exit()
             elif i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
-                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
-                        # здесь ошибка
-                        name_team1 = input_box1.get()
-                        name_team2 = input_box2.get()
-                        x_size_field = int(input_box3.get())
-                        y_size_field = int(input_box4.get())
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size and input_box1.empty() and input_box2.empty() and input_box3.get().isdigit():
+                        if 5 < int(input_box3.get()) < 11:
+                            # здесь ошибка
+                            name_team1 = input_box1.get()
+                            name_team2 = input_box2.get()
+                            x_size_field = int(input_box3.get())
+                            y_size_field = x_size_field
 
-                        heroes_func(name_team1, name_team2, x_size_field, y_size_field)
+                            heroes_func(name_team1, name_team2, x_size_field, y_size_field)
             for box in input_boxes:
                 box.handle_event(i)
 
@@ -152,17 +152,15 @@ def team_name_and_field_size():
         f3 = pygame.font.SysFont('serif', size // 10 * 7)
         team1_text = f1.render('Name team 1: ', 1, team1_color)
         team2_text = f1.render('Name team 2: ', 1, team2_color)
-        fieldx_text = f1.render('Length field: ', 1, additional_game_color)
-        fieldy_text = f1.render('Width field: ', 1, additional_game_color)
+        fieldx_text = f1.render('Size field: ', 1, additional_game_color)
         text_continue = f3.render(' Continue', 1, background_color)
 
-        txt_info = f2.render('Убедительная просьба, в полях Length field и Width field писать целые числа от 6 до 10. '
+        txt_info = f2.render('Убедительная просьба, в поле Size field писать целые числа от 6 до 10. '
                              'Иначе горите в аду.', 1, (0, 0, 0))
 
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (size, 2 * size))
         sc.blit(fieldx_text, (size, 3 * size))
-        sc.blit(fieldy_text, (size, 4 * size))
         sc.blit(txt_info, (size, 7 * size))
 
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
@@ -231,7 +229,7 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
             sc.blit(f1.render("x: ", 1, additional_game_color), (13 * size, j * size))
             sc.blit(f1.render("y: ", 1, additional_game_color), (14 * size, j * size))
 
-        txt_info = f2.render(f' х не должно превышать {x_size_field}; y {y_size_field}', 1, (0, 0, 0))
+        txt_info = f2.render(f' х и у не должны превышать {x_size_field}', 1, (0, 0, 0))
         sc.blit(txt_info, (size, 8 * size))
 
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
@@ -477,6 +475,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game('1111', '22222', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+# game('1111', '22222', 7, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
-# main_menu()
+main_menu()
