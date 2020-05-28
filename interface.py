@@ -194,12 +194,19 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
             if i.type == pygame.QUIT: exit()
             if i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
-                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size and input_box.empty() and input_box1.empty() and input_box2.empty() and input_box3.empty() and input_box.get().isdigit() and input_box1.get().isdigit() and input_box2.get().isdigit() and input_box3.get().isdigit():
-                        if 5 < int(input_box.get()) and int(input_box1.get()) and int(input_box2.get()) and int(input_box3.get())< 11:
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        flag = True
                         coordinates = []
                         for input_box in input_boxes:
-                            coordinates.append(int(input_box.get()))
-                        game(name_team1, name_team2, x_size_field, y_size_field, coordinates)
+                            if input_box.empty() and input_box.get().isdigit():
+                                if 0 < int(input_box.get()) < x_size_field + 1:
+                                    coordinates.append(int(input_box.get()))
+                                else:
+                                    flag = False
+                            else:
+                                flag = False
+                        if flag:
+                            game(name_team1, name_team2, x_size_field, y_size_field, coordinates)
             for box in input_boxes:
                 box.handle_event(i)
 
@@ -428,7 +435,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                         if rect[1].collidepoint(pos):
                             active_rect = rect
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
-                        main_menu()
+                        final('Ничья')
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
         f4 = pygame.font.SysFont('serif', size // 10 * 6)
@@ -464,9 +471,14 @@ def final(win_team):
         f1 = pygame.font.SysFont('serif', size)
         f2 = pygame.font.SysFont('serif', size + 30)
         f3 = pygame.font.SysFont('serif', size // 10 * 9)
+        if win_team == 'Ничья':
+            txt_win = f1.render('Победили МЫ', 1, main_game_color)
 
-        txt_win = f1.render('Победила команда', 1, main_game_color)
-        txt_win_team = f2.render(win_team, 1, main_game_color)
+            txt_win_team = f2.render('', 1, main_game_color)
+        else:
+            txt_win = f1.render('Победила команда', 1, main_game_color)
+            txt_win_team = f2.render(win_team, 1, main_game_color)
+
         text_continue = f3.render('  Done', 1, background_color)
 
         sc.blit(txt_win, (size * 4, size * 2))
@@ -477,6 +489,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-game('1111', '22222', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+#game('1111', '22222', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
-# main_menu()
+main_menu()
