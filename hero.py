@@ -1,6 +1,5 @@
 from random import randint
 from board import Board
-from PIL import Image
 
 
 class Hero:

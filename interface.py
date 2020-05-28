@@ -1,13 +1,9 @@
-# я не знаю, что тут происходит и как это хреньь вообще может работает
-
 import pygame
-from board import Board
 from hero import *
 
 FPS = 60
 size = 70
 
-# это цвета, моя самая любимая часть кода
 background_color = (231, 240, 237)
 main_game_color = (127, 185, 194)
 additional_game_color = (149, 172, 178)
@@ -23,7 +19,6 @@ sc = pygame.display.set_mode((size * 16, size * 9))
 sc.fill(background_color)
 
 
-# это ввод, позаимствовали у какого-то классного человека, работает и хорошо
 class InputBox:
     def __init__(self, x, y, w, h, text=''):
         self.rect = pygame.Rect(int(x), int(y), int(w), int(h))
@@ -65,7 +60,6 @@ class InputBox:
         # Blit the rect.
         pygame.draw.rect(sc, self.color, self.rect, 2)
 
-    # get я написала сама, какая молодец
     def get(self):
         return self.text
 
@@ -76,9 +70,7 @@ class InputBox:
             return True
 
 
-
 # Главное меню
-# единственное что работает идеально
 def main_menu():
     while 1:
         sc.fill(background_color)
@@ -114,7 +106,6 @@ def main_menu():
 
 
 # ввод названий команд и размеров поля
-# не работает удаление текста в вводе
 def team_name_and_field_size():
     input_box1 = InputBox(size * 7, size, size * 6, size)
     input_box2 = InputBox(size * 7, size * 2, size * 6, size)
@@ -131,7 +122,6 @@ def team_name_and_field_size():
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size and input_box1.empty() and input_box2.empty() and input_box3.get().isdigit():
                         if 5 < int(input_box3.get()) < 11:
-                            # здесь ошибка
                             name_team1 = input_box1.get()
                             name_team2 = input_box2.get()
                             x_size_field = int(input_box3.get())
@@ -170,7 +160,6 @@ def team_name_and_field_size():
 
 
 # ввод координат героев
-# здесь все работает и слава богу
 def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
     characters = ['Инженер', "Глава ОПГ Железные рукава", "Журналист", "Шершняга", "Роза Робот", "Катамаранов"]
     input_boxes = []
@@ -246,9 +235,6 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
         clock.tick(FPS)
 
 
-# не хочет работать
-# у меня не работает голова, чтобы написать формулы для поля
-# я тупой пенечек, что вы от меня хотите
 def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     possible_move = []
     heroes_rect = []
@@ -283,8 +269,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         txt_ag = f2.render(f'Ловкость: {hero._ag} ', 1, additional_game_color)
         txt_int = f2.render(f'Интеллект: {hero._int} ', 1, additional_game_color)
         txt_info = f2.render(hero.description(), 1, (10, 40, 140))
-
-        # тут должна быть картинка
         image = pygame.image.load(hero.image()).convert_alpha()
         new_image = pygame.transform.scale(image, (size * 2, size * 2))
 
@@ -334,12 +318,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     heroes_team_1.append(rosa_1)
     heroes = heroes_team_0 + heroes_team_1
 
-    # ааааа, я заколебалась писать это все
-
     i = 0
-    #  вот здесь фигня какая-то
     s_x = min(size // x_size_field * 6, size // y_size_field * 10)
-    # s_y = size // y_size_field * 10
     for hero in heroes:
         board.add(hero, coordinates[i], coordinates[i + 1])
         i += 2
@@ -351,7 +331,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.fill(background_color)
         pos = pygame.mouse.get_pos()
 
-        # из-за фигни выше не правильно отрисовывается
         for i in range(x_size_field + 1):
             pygame.draw.line(sc, main_game_color, [i * s_x + size, size], [i * s_x + size, (y_size_field + 1) * s_x], 3)
 
@@ -379,19 +358,14 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             for i in range(len(board.field)):
                 for j in range(len(board.field[i])):
                     if active_rect is not None:
-                        # поправить правую стенку
                         if board.field[i][j] == active_rect[0]:
-                            # право
                             if i != x_size_field - 1:
-                                #print(i)
-                                #print(x_size_field)
                                 rect = pygame.Rect((size + (i + 1) * s_x, size + j * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
                                 surf.set_alpha(150)
                                 sc.blit(surf, rect)
                                 possible_move.append([rect, 'направо'])
-                            # низ
                             if j != y_size_field - 1:
                                 rect = pygame.Rect((size + (i) * s_x, size + (j + 1) * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
@@ -399,7 +373,6 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                                 surf.set_alpha(150)
                                 sc.blit(surf, rect)
                                 possible_move.append([rect, 'вниз'])
-                            # верх
                             if j != 0:
                                 rect = pygame.Rect((size + (i) * s_x, size + (j - 1) * s_x), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
@@ -480,6 +453,9 @@ def final(win_team):
             txt_win_team = f2.render(win_team, 1, main_game_color)
 
         text_continue = f3.render('  Done', 1, background_color)
+        image = pygame.image.load('100.jpg').convert_alpha()
+        new_image = pygame.transform.scale(image, (300, 300))
+        sc.blit(new_image, (size*11, int(size * 3.5)))
 
         sc.blit(txt_win, (size * 4, size * 2))
         sc.blit(txt_win_team, (size, size * 3))
@@ -490,5 +466,5 @@ def final(win_team):
 
 
 #game('1111', '22222', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
-# final('Дрима тима')
+#final('Дрима тима')
 main_menu()

@@ -57,7 +57,6 @@ class Board:
     def sizes(self):
         return [self.x_size, self.y_size]
 
-    # надо переписать
     def move(self, hero, st, num):
         flag = False
         if 0 < num < 2:
@@ -98,7 +97,7 @@ class Board:
         print(self.field[x][y])
         if self.field[x][y] != 0 and self.field[x][y].team != self.field[i][j].team :
             self.field[i][j] = hero_1
-            battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
+            battle(hero_1, self.field[x][y])
         elif self.field[x][y] == 0:
             self.field[x][y] = hero_1
             self.field[i][j] = 0
@@ -106,10 +105,8 @@ class Board:
     def __str__(self):
         return str(self.field)
 
-    # эта функция нахер не нужна
     def game(self, team):
         while True:
-            # check team
             count_0 = 0
             count_1 = 0
             for i in range(self.x_size):
@@ -124,9 +121,3 @@ class Board:
                 break
             elif count_1 == 0:
                 print('Team 2 win')
-
-        #  оно как-то работает, но я хз как
-
-#  board должен знать кто ходит
-# проверить пустая ли клетка, если на клетке враг - сражение:
-#  проверить status_move: Полина
