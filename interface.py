@@ -194,7 +194,8 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
             if i.type == pygame.QUIT: exit()
             if i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
-                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size and input_box.empty() and input_box1.empty() and input_box2.empty() and input_box3.empty() and input_box.get().isdigit() and input_box1.get().isdigit() and input_box2.get().isdigit() and input_box3.get().isdigit():
+                        if 5 < int(input_box.get()) and int(input_box1.get()) and int(input_box2.get()) and int(input_box3.get())< 11:
                         coordinates = []
                         for input_box in input_boxes:
                             coordinates.append(int(input_box.get()))
