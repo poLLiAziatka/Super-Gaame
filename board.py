@@ -90,26 +90,32 @@ class Board:
 
     def battle(self, attacking, defending):
         print('oooh yeaa')
-        pass
         attacking.attack = random.randint(1, attacking._st)
+        print(attacking.attack)
         defending.bias = defending.health / 5 * 8
+        print(defending.bias)
 
         if random.randint(0, 100) in [x for x in range(int(defending.bias))]:
+            print('Уворот')
             i = random.randint(0, 1)
             attacking.skills[i]
             attacking.attack = 0
 
         attacking.sk_pr = attacking._int / 5 * 7
+        print(attacking.sk_pr)
 
         if random.randint(0, 100) in [x for x in range(int(attacking.sk_pr))]:
+            print('Skill')
             i = random.randint(0, 1)
             attacking.skills[i]
-
+        '''
         attacking.sd = attacking._ag / 5 * 6
+        print(attacking.sd )
         if random.randint(0, 100) in [x for x in range(int(attacking.sd))]:
+            print()
             i = random.randint(0, 1)
             attacking.skills[i]
-
+        '''
         defending.health -= attacking.attack
 
         defending.attack = random.randint(1, defending._st)

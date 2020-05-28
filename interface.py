@@ -69,6 +69,13 @@ class InputBox:
     def get(self):
         return self.text
 
+    def empty(self):
+        if self.text == '':
+            return False
+        else:
+            return True
+
+
 
 # Главное меню
 # единственное что работает идеально
@@ -246,11 +253,11 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
     def step():
         nonlocal active_team
-        # print(active_team)
         if active_team == name_team1:
             active_team = name_team2
         else:
             active_team = name_team1
+
         print(active_team)
 
         for hero in heroes:
@@ -263,7 +270,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         f2 = pygame.font.SysFont('serif', size // 4)
 
         txt_hero = f1.render(str(hero), 1, main_game_color)
-        # twt_team = f2.render(hero.team, 1, main_game_color)
+        twt_team = f2.render(f'команда: {hero.team}', 1, main_game_color)
         txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
         pygame.draw.rect(sc, (255, 0, 0), (int(size * 12.5), size * 4, hero.health // 4, size // 4), 1)
         txt_st = f2.render(f'Сила: {hero._st} ', 1, additional_game_color)
@@ -276,7 +283,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         new_image = pygame.transform.scale(image, (size * 2, size * 2))
 
         pygame.draw.rect(sc, (0, 0, 0), (int(size * 11.5), int(size * 1.5), size * 2, size * 2), 1)
-        # sc.blit(twt_team, (size * 12, size // 3))
+        sc.blit(twt_team, (size * 12, size))
         sc.blit(new_image, (int(size * 11.5), int(size * 1.5)))
         sc.blit(txt_info, (size * 10, size * 6))
         sc.blit(txt_hero, (size * 10, size // 2))
