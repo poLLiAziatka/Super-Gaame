@@ -12,8 +12,8 @@ class Hero:
         self.team = team
         self.health = self._st * 5
         self.start_health = self._st * 25
-        self.p_iv = self._ag / 50 * 80
-        self.p_mag = self._int / 50 * 70
+        self.p_iv = self._ag // 50 * 80
+        self.p_mag = self._int // 50 * 70
         self.freeze = 0
 
     def move_freeze(self):
@@ -70,25 +70,13 @@ class Engineer(Intelligency):
 class Leader_iron_sleeves(Intelligency):
     def __init__(self, _st, _ag, _int, team):
         super().__init__(_st, _ag, _int, team)
-        self.skills = [self.double_damage, self.freezing]
+        self.skills = [self.double_damage, self.no_double_damage]
 
     def double_damage(self, enemy):
         self.damage *= 2
 
-    def freezing(self, enemy):
-        lst_freeze = []
-        x, y = Board.sizes()
-        downx = x - 2
-        upx = x + 2
-        downy = y - 2
-        upy = y + 2
-        field = Board.field_return()
-        for i in range(downx, upx + 1):
-            for j in range(downy, upy + 1):
-                if field[i][j] != 0:
-                    lst_freeze.append(field[i][j])
-        for hero in lst_freeze:
-            self.freeze += 2
+    def no_double_damage(self, enemy):
+        self.damage = self.damage // 2
 
     def image(self):
         return "2.jpg"
@@ -135,6 +123,8 @@ class Rosa_robot(Agility):
     def friend_hit(self, enemy_hero):
         if enemy_hero == Shershnyga:
             enemy_hero.intel = int(enemy_hero.intel * 0.85)
+            print(enemy_hero.intel)
+            print(Shershnyga._int)
 
     def image(self):
         return "4.jpg"
@@ -153,7 +143,9 @@ class Shershnyga(Strength):
         self.skills = [self.rosa_beats, self.degrade]
 
     def degrade(self, hero):
-        self._st *= 1.15
+        print(self._st)
+        self._st = int(self._st * 1.15)
+        print(self._st)
 
     def rosa_beats(self, enemy_hero):
         if enemy_hero == Rosa_robot:
@@ -176,7 +168,7 @@ class Journalist(Strength):
         self.skills = [self.degrade, self.run]
 
     def degrade(self, hero):
-        self.damage *= 0.7
+        self.damage = self.damage // 10 * 7
 
     def run(self, hero):
         if self._ag <= 7:

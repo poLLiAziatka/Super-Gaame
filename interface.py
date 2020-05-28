@@ -325,8 +325,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         i += 2
 
     active_rect = None
-
     while 1:
+        lst = ['', '']
 
         sc.fill(background_color)
         pos = pygame.mouse.get_pos()
@@ -400,15 +400,18 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                                     print(rect[0])
                                     if rect[0].team == active_team and rect[0].freeze == 0:
                                         board.move(rect[0], move[1], 1)
+                                        lst = board.lst
                                         step()
                                         active_rect = None
                                         heroes_rect = []
+
 
                     for rect in heroes_rect:
                         if rect[1].collidepoint(pos):
                             active_rect = rect
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
                         final('Ничья')
+
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
         f4 = pygame.font.SysFont('serif', size // 10 * 6)
@@ -417,6 +420,11 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.blit(text_team, (size, size // 6))
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
+        f5 = pygame.font.SysFont('serif', size // 10 * 2)
+        text = f5.render(f'{lst[0]}', 1, main_game_color)
+        text2 = f5.render(f'{lst[1]}', 1, main_game_color)
+        sc.blit(text, (int(size * 6.5), size // 2))
+        sc.blit(text2, (int(size * 6.5), size // 3))
 
         if not heroes_team_1:
             final(heroes_team_0)
@@ -425,6 +433,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
         if active_rect is not None:
             info_hero(active_rect[0])
+
 
         pygame.display.update()
         clock.tick(FPS)
@@ -465,6 +474,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-#game('1111', '22222', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
+game('1111', '22222', 5, 5, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 #final('Дрима тима')
-main_menu()
+#main_menu()

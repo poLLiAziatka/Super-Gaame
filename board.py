@@ -3,38 +3,43 @@ import random
 
 def battle(attacking, defending):
     global Hero
-    attacking.attack = random.randint(attacking.damage // 2, attacking.damage)
-    print(attacking.attack)
-    defending.bias = defending.health / 100
-    print(defending.bias)
+    if attacking.team == defending.team:
+        return
+    lst = []
+    hero_1 = defending
+    hero_2 = attacking
+    for i in range(2):
+        flag = False
+        attacking = hero_2
+        defending = hero_1
+        attacking.attack = random.randint(attacking.damage // 2, attacking.damage)
+        defending.bias = defending.health // 100
 
-    if random.randint(0, 100) in [x for x in range(int(defending.bias))]:
-        print('Уворот')
-        i = random.randint(0, 1)
-        attacking.attack = 0
+        if random.randint(0, 100) in [x for x in range(int(defending.bias))]:
+            attacking.attack = 0
 
-    attacking.sk_pr = attacking._int / 5 * 7
-    print(attacking.sk_pr)
+        attacking.sk_pr = attacking._int // 5 * 7
 
-    if random.randint(0, 100) in [x for x in range(int(attacking.sk_pr))]:
+        if random.randint(0, 100) in [x for x in range(int(attacking.sk_pr))]:
+            i = random.randint(0, 1)
+            attacking.skills[i](defending)
+            flag = True
+        defending.health -= attacking.attack
 
-        i = random.randint(0, 1)
-        attacking.skills[i](defending)
-        print(attacking.skills[i])
-    '''
-    attacking.sd = attacking._ag / 5 * 6
-    print(attacking.sd )
-    if random.randint(0, 100) in [x for x in range(int(attacking.sd))]:
-        print()
-        i = random.randint(0, 1)
-        attacking.skills[i]
-    '''
-    print(defending.health)
-    print(attacking.attack)
-    defending.health -= attacking.attack
-    print(defending.health)
-
-    defending.attack = random.randint(1, defending._st)
+        defending.attack = random.randint(1, defending._st)
+        if attacking.attack == 0:
+            lst.append(f'Персонаж {defending} отклонился от удара персонажа {attacking}')
+        elif flag:
+            lst.append(f'Cработал скилл персонажа {attacking}, здоровье {defending} именилось на {attacking.attack}')
+        else:
+            lst.append(f'Персонаж {attacking} ударил персонажа {defending}: - {attacking.attack} здоровья')
+        if attacking.health <= 0 or defending.health <= 0:
+            lst.append('')
+            break
+        hero_1 = attacking
+        hero_2 = defending
+    print(lst)
+    return lst
 
 
 class Board:
@@ -42,6 +47,7 @@ class Board:
         self.field = [[0] * y_size for _ in range(x_size)]
         self.x_size = x_size
         self.y_size = y_size
+        self.lst = ['', '']
 
     def add(self, hero, x, y):
         if x >= self.x_size or x < 0 or y > self.y_size < 0:
@@ -55,7 +61,7 @@ class Board:
         return self.field
 
     def sizes(self):
-        return [self.x_size, self.y_size]
+        return self.x_size, self.y_size
 
     def move(self, hero, st, num):
         flag = False
@@ -66,7 +72,7 @@ class Board:
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
-                            self.check_move(i + num, j, hero, i, j)  # self.check_move(i + num - 1, j, hero)
+                            self.check_move(i + num, j, hero, i, j)
                             flag = True
                             break
                         elif st == 'налево':
@@ -95,9 +101,9 @@ class Board:
     def check_move(self, x, y, hero_1, i, j):
         print(x, y)
         print(self.field[x][y])
-        if self.field[x][y] != 0 and self.field[x][y].team != self.field[i][j].team :
+        if self.field[x][y] != 0 and self.field[x][y].team != self.field[i][j].team:
             self.field[i][j] = hero_1
-            battle(hero_1, self.field[x][y])
+            self.lst = battle(hero_1, self.field[x][y])
         elif self.field[x][y] == 0:
             self.field[x][y] = hero_1
             self.field[i][j] = 0
