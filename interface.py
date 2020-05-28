@@ -1,4 +1,4 @@
-# я не знаю, что тут происходит и как это хреньь вообще работает
+# я не знаю, что тут происходит и как это хреньь вообще может работает
 
 import pygame
 from board import Board
@@ -23,7 +23,7 @@ sc = pygame.display.set_mode((size * 16, size * 9))
 sc.fill(background_color)
 
 
-# это ввод, работает и хорошо
+# это ввод, позаимствовали у какого-то классного человека, работает и хрошо
 class InputBox:
     def __init__(self, x, y, w, h, text=''):
         self.rect = pygame.Rect(int(x), int(y), int(w), int(h))
@@ -66,11 +66,12 @@ class InputBox:
         pygame.draw.rect(sc, self.color, self.rect, 2)
 
     # get я написала сама, какая молодец
-    def get(self):
+    def get(self)
         return self.text
 
 
 # Главное меню
+# единственное что работает идеально
 def main_menu():
     while 1:
         sc.fill(background_color)
@@ -90,7 +91,7 @@ def main_menu():
         pygame.draw.rect(sc, additional_game_color, (5 * size, 5 * size, 4 * size, 1 * size))
         pygame.draw.rect(sc, additional_game_color, (5 * size, 6 * size, 4 * size, 1 * size))
 
-        f1 = pygame.font.SysFont('serif', size // 10 * 17)
+        f1 = pygame.font.SysFont('serif', size // 10 * 16)
         f2 = pygame.font.SysFont('serif', size // 10 * 10)
         txt_name = f1.render('Plапенко', 1, background_color)
         txt_button_start = f2.render('Play', 1, background_color)
@@ -123,6 +124,7 @@ def team_name_and_field_size():
             elif i.type == pygame.MOUSEBUTTONDOWN:
                 if i.button == 1:
                     if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        # здесь ошибка
                         name_team1 = input_box1.get()
                         name_team2 = input_box2.get()
                         x_size_field = int(input_box3.get())
@@ -158,6 +160,7 @@ def team_name_and_field_size():
 
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
+
         pygame.display.update()
         clock.tick(FPS)
 
@@ -204,12 +207,14 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
         f1 = pygame.font.SysFont('serif', size // 10 * 3)
         f2 = pygame.font.SysFont('serif', size // 10 * 3)
         f3 = pygame.font.SysFont('serif', size // 10 * 7)
+
         team1_text = f1.render(name_team1, 1, team1_color)
         team2_text = f1.render(name_team2, 1, team2_color)
         text_continue = f3.render(' Continue', 1, background_color)
 
         sc.blit(team1_text, (size, size))
         sc.blit(team2_text, (8 * size, size))
+
         j = 1
         for character in characters:
             j += 1
@@ -233,27 +238,49 @@ def heroes_func(name_team1, name_team2, x_size_field, y_size_field):
 # у меня не работает голова, чтобы написать формулы для поля
 # я тупой пенечек, что вы от меня хотите
 def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
-    class Hero_sprite(pygame.sprite.Sprite):
-        def __init__(self, hero):
-            hero: Hero
-            pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load(hero.image())
-            self.rect = self.image.get_rect(center=(x, 0))
+    possible_move = []
+    heroes_rect = []
+    rects = []
+    active_team = name_team1
+    for i in range(len(coordinates)):
+        coordinates[i] -= 1
+
+    def step():
+        global active_team
+        if active_team == name_team1:
+            active_team = name_team2
+        else:
+            active_team = name_team1
+
+        print(active_team)
+
+        for hero in heroes:
+            if hero.health != hero.start_health:
+                hero.health()
+            hero.move_freeze()
 
     def info_hero(hero):
         f1 = pygame.font.SysFont('serif', size // 2)
         f2 = pygame.font.SysFont('serif', size // 4)
 
-        txt_hero = f1.render('hero', 1, main_game_color)
+        txt_hero = f1.render(str(hero), 1, main_game_color)
+        # twt_team = f2.render(hero.team, 1, main_game_color)
         txt_health = f2.render('Здоровье:  ', 1, additional_game_color)
         pygame.draw.rect(sc, (255, 0, 0), (int(size * 12.5), size * 4, hero.health // 4, size // 4), 1)
         txt_st = f2.render(f'Сила: {hero._st} ', 1, additional_game_color)
         txt_ag = f2.render(f'Ловкость: {hero._ag} ', 1, additional_game_color)
         txt_int = f2.render(f'Интеллект: {hero._int} ', 1, additional_game_color)
+        txt_info = f2.render(hero.description(), 1, (10, 40, 140))
 
         # тут должна быть картинка
+        image = pygame.image.load(hero.image()).convert_alpha()
+        new_image = pygame.transform.scale(image, (size * 2, size * 2))
+
         pygame.draw.rect(sc, (0, 0, 0), (int(size * 11.5), int(size * 1.5), size * 2, size * 2), 1)
-        sc.blit(txt_hero, (size * 12, size // 2))
+        # sc.blit(twt_team, (size * 12, size // 3))
+        sc.blit(new_image, (int(size * 11.5), int(size * 1.5)))
+        sc.blit(txt_info, (size * 10, size * 6))
+        sc.blit(txt_hero, (size * 10, size // 2))
         sc.blit(txt_health, (size * 11, size * 4))
         sc.blit(txt_st, (size * 11, int(size * 4.5)))
         sc.blit(txt_ag, (size * 11, size * 5))
@@ -296,68 +323,110 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
     heroes = heroes_team_0 + heroes_team_1
 
     # ааааа, я заколебалась писать это все
-    heroes_sprite = []
+
     i = 0
+    #  вот здесь фигня какая-то
+    s_x = min(size // x_size_field * 6, size // y_size_field * 10)
+    # s_y = size // y_size_field * 10
     for hero in heroes:
         board.add(hero, coordinates[i], coordinates[i + 1])
         i += 2
-        heroes_sprite.append(Hero_sprite(hero))
 
-
-
-
-
-    rects = []
-    s_x = min(size // x_size_field * 6, size // y_size_field * 10)
-    '''
-    i = 0
-    for hero in heroes:
-        rect = pygame.Rect((size + coordinates[i] * s_x, coordinates[i + 1] * s_y), (s_x, s_y))
-        rect = pygame.draw.rect(sc, (255, 255, 255), (size, size, s_x, s_y))
-        i += 2
-        rects.append([hero, rect])
-    '''
+    active_rect = None
 
     while 1:
-        heroes_rect = []
+
         sc.fill(background_color)
         pos = pygame.mouse.get_pos()
-        for i in pygame.event.get():
-            if i.type == pygame.QUIT: exit()
-            if i.type == pygame.MOUSEBUTTONDOWN:
-                if i.button == 1:
-                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
-                        main_menu()
 
-            # эту штуку нажо переделать под спрайты
-            for rect in rects:
-                if rect[1].collidepoint(pos):
-                    info_hero(rect[0])
-
+        # из-за фигни выше не правильно отрисовывается
         for i in range(x_size_field + 1):
             pygame.draw.line(sc, main_game_color, [i * s_x + size, size], [i * s_x + size, (y_size_field + 1) * s_x], 3)
 
         for i in range(y_size_field + 1):
             pygame.draw.line(sc, main_game_color, [size, i * s_x + size], [(x_size_field + 1) * s_x, size + i * s_x], 3)
-        """
-        for rect in rects:
-            # здесь будут картинки
-            surf = pygame.Surface((size + s_x, s_y))
-            surf.fill(main_game_color)
-            sc.blit(surf, rect[1])
-        """
-        '''
+
         for i in range(len(board.field)):
             for j in range(len(board.field[i])):
                 if board.field[i][j] in heroes:
-                    hero_img = pygame.image.load(board.field[i][j].image)
-                    hero_rect = hero_img.get_rect(bottomright=(s_x, s_x))
-                    # heroes_rect.append((hero_rect, ))
-                    sc.blit(hero_img, hero_img)
-        '''
+                    image = pygame.image.load(board.field[i][j].image()).convert_alpha()
+                    new_image = pygame.transform.scale(image, (s_x, s_x))
+
+                    rect = pygame.Rect((size + i * s_x, size + j * s_x), (s_x, s_x))
+                    surf = pygame.Surface((s_x, s_x))
+
+                    surf.blit(new_image, (0, 0))
+                    sc.blit(surf, rect)
+
+                    heroes_rect.append([board.field[i][j], rect])
+                    rects.append(rect)
+
+        if active_rect is not None:
+            possible_move = []
+            for i in range(len(board.field)):
+                for j in range(len(board.field[i])):
+                    if active_rect is not None:
+                        # поправить правую стенку
+                        if board.field[i][j] == active_rect[0]:
+                            # право
+                            if i != y_size_field - 1:
+                                rect = pygame.Rect((size + (i + 1) * s_x, size + j * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
+                                sc.blit(surf, rect)
+                                possible_move.append([rect, 'направо'])
+                            # низ
+                            if j != y_size_field - 1:
+                                rect = pygame.Rect((size + (i) * s_x, size + (j + 1) * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
+                                sc.blit(surf, rect)
+                                possible_move.append([rect, 'вниз'])
+                            # верх
+                            if j != 0:
+                                rect = pygame.Rect((size + (i) * s_x, size + (j - 1) * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
+                                sc.blit(surf, rect)
+                                possible_move.append([rect, 'вверх'])
+                            if i != 0:
+                                rect = pygame.Rect((size + (i - 1) * s_x, size + (j) * s_x), (s_x, s_x))
+                                surf = pygame.Surface((s_x, s_x))
+                                surf.fill((255, 130, 110))
+                                surf.set_alpha(150)
+                                sc.blit(surf, rect)
+                                possible_move.append([rect, 'налево'])
+
+        for i in pygame.event.get():
+            if i.type == pygame.QUIT:
+                exit()
+            if i.type == pygame.MOUSEBUTTONDOWN:
+                if i.button == 1:
+                    for move in possible_move:
+                        if move[0].collidepoint(pos):
+                            for rect in heroes_rect:
+                                if rect == active_rect:
+                                    print(rect[0])
+                                    if rect[0].team == active_team and rect[0].freeze == 0:
+                                        board.move(rect[0], move[1], 1)
+                                        step()
+                                        active_rect = None
+                                        heroes_rect = []
+
+                    for rect in heroes_rect:
+                        if rect[1].collidepoint(pos):
+                            active_rect = rect
+                    if 13 * size <= pos[0] <= 16 * size and 8 * size <= pos[1] <= 9 * size:
+                        main_menu()
 
         f3 = pygame.font.SysFont('serif', size // 10 * 8)
-        text_continue = f3.render('   Finish', 1, background_color)
+        f4 = pygame.font.SysFont('serif', size // 10 * 6)
+        text_continue = f3.render('  Finish', 1, background_color)
+        text_team = f4.render(f'Ход команды: {active_team}', 1, team1_color)
+        sc.blit(text_team, (size, size // 6))
         pygame.draw.rect(sc, additional_game_color, (13 * size, 8 * size, 3 * size, 1 * size))
         sc.blit(text_continue, (13 * size, 8 * size))
 
@@ -365,6 +434,9 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
             final(heroes_team_0)
         elif not heroes_team_0:
             final(heroes_team_1)
+
+        if active_rect is not None:
+            info_hero(active_rect[0])
 
         pygame.display.update()
         clock.tick(FPS)
@@ -397,6 +469,6 @@ def final(win_team):
         clock.tick(FPS)
 
 
-# game('lhbvf', 'sdhhjh', 5, 6, [])
+game('1111', '22222', 5, 7, [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 1, 3, 1, 4, 1, 5, 5, 1, 5, 2, 5, 3, 5, 4, 5, 5])
 # final('Дрима тима')
-main_menu()
+# main_menu()

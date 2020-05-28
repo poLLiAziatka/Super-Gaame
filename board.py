@@ -22,23 +22,24 @@ class Board:
     def sizes(self):
         return [self.x_size, self.y_size]
 
+# надо переписать
     def move(self, hero, st, num):
         if 0 < num < 3:
             for i in range(self.x_size):
                 for j in range(self.y_size):
                     if self.field[i][j] == hero:
                         if st == 'направо':
-                            self.field[i][j] = 0
-                            self.check_move(i + num, j, hero)
+                            self.check_move(i + num , j, hero, i, j)  #  self.check_move(i + num - 1, j, hero)
+                            break
                         elif st == 'налево':
-                            self.field[i][j] = 0
-                            self.check_move(i - num, j, hero)
+                            self.check_move(i - num, j, hero, i, j)
+                            break
                         elif st == 'вверх':
-                            self.field[i][j] = 0
-                            self.check_move(i, j + num, hero)
+                            self.check_move(i, j - num, hero, i, j)
+                            break
                         elif st == 'вниз':
-                            self.field[i][j] = 0
-                            self.check_move(i, j - num, hero)
+                            self.check_move(i,  j + num, hero, i, j)
+                            break
                         else:
                             print('Неправильно задана команда')
         else:
@@ -50,13 +51,22 @@ class Board:
         else:
             return False
 
-    def check_move(self, x, y, hero_1):
+    def check_move(self, x, y, hero_1, i, j):
+        print(x, y)
+        print(self.field[x][y])
         if self.field[x][y] != 0:
-            self.battle(hero_1, self.field[x][y])  # сначала, кто встал на клетку, потом кто был там
-        else:
+            self.field[i][j] = hero_1
+            self.battle(hero_1, self.field[x][y])# сначала, кто встал на клетку, потом кто был там
+        elif self.field[x][y] == 0:
             self.field[x][y] = hero_1
+            self.field[i][j] = 0
 
-# та функция нахер не нужна
+
+    def __str__(self):
+        return str(self.field)
+
+
+# эта функция нахер не нужна
     def game(self, team):
         while True:
             # check team
@@ -76,26 +86,28 @@ class Board:
                 print('Team 2 win')
 
     def battle(self, attacking, defending):
+        print('oooh yeaa')
+        pass
         attacking.attack = random.randint(1, attacking._st)
-        defending.bias = defending.healf / 5 * 8
+        defending.bias = defending.health / 5 * 8
 
-        if random.randint(0, 100) in [x for x in range(defending.bias)]:
+        if random.randint(0, 100) in [x for x in range(int(defending.bias))]:
             i = random.randint(0, 1)
             attacking.skills[i]
             attacking.attack = 0
 
         attacking.sk_pr = attacking._int / 5 * 7
 
-        if random.randint(0, 100) in [x for x in range(attacking.sk_pr)]:
+        if random.randint(0, 100) in [x for x in range(int(attacking.sk_pr))]:
             i = random.randint(0, 1)
             attacking.skills[i]
 
         attacking.sd = attacking._ag / 5 * 6
-        if random.randint(0, 100) in [x for x in range(attacking.sd)]:
+        if random.randint(0, 100) in [x for x in range(int(attacking.sd))]:
             i = random.randint(0, 1)
             attacking.skills[i]
 
-        defending.healf -= attacking.attack
+        defending.health -= attacking.attack
 
         defending.attack = random.randint(1, defending._st)
         #  оно как-то работает, но я хз как

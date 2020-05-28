@@ -10,17 +10,16 @@ class Hero:
         self._st = _st
         self._ag = _ag
         self._int = _int
+        self.team = team
         self.health = self._st * 25
+        self.start_health = self._st * 25
         self.p_iv = self._ag / 50 * 80
         self.p_mag = self._int / 50 * 70
         self.freeze = 0
 
-    def ability_to_move(self):
-        if self.freeze == 0:
-            return True
-        else:
+    def move_freeze(self):
+        if self.freeze != 0:
             self.freeze -= 1
-            return False
 
     def heal(self):
         self.health *= 1.15
@@ -65,11 +64,11 @@ class Engineer(Intelligency):
         return 'Инженер'
 
     def description(self):
-        st = '''Неуверенный в себе, непутевый, меланхоличный инженер НИИ, который : разрабатывает секретные сыворотки и
-        проводит : генетические эксперименты. Часто он становится героем :  неловких, а иногда опасных ситуаций, или :
-         просто рассуждает о жизни'''
-        lst = st.split(':')
-        return lst
+        st = 'Меланхоличный, разрабатывает секретные сыворотки'
+        return st
+
+    def team(self):
+        return self
 
 
 class Leader_iron_sleeves(Intelligency):
@@ -102,10 +101,11 @@ class Leader_iron_sleeves(Intelligency):
         return 'Глава ОПГ железные рукава'
 
     def description(self):
-        st = '''ОПГ «Железные рукава», которая помимо преступной деятельности : занимается и музыкальной. Их дело пытается
-         расследовать: ведущий передачи «Загадка дыры», но не добивается успеха'''
-        lst = st.split(':')
-        return lst
+        st = 'Руководит ОПГ, за которой следит Журналист'
+        return st
+
+    def team(self):
+        return self
 
 
 class Katamaronov(Agility):
@@ -127,10 +127,11 @@ class Katamaronov(Agility):
         return 'Катамаранов'
 
     def description(self):
-        st = '''Водитель асфальтового катка, одноклассник инженера и:алкоголик Игорь Катамаранов. Его жену Зинку Кашину,
-         управляющую :отделения нейротрансплантологии НИИ, засосало в трубу.'''
-        lst = st.split(':')
-        return lst
+        st = 'Алкоголик, одноклассник инженера'
+        return st
+
+    def team(self):
+        return self
 
 
 class Rosa_robot(Agility):
@@ -152,11 +153,11 @@ class Rosa_robot(Agility):
         return 'Роза Робот'
 
     def description(self):
-        st = '''Рок-группа «Багровый фантомас», состоящая из Розы Робота :и Шершняги. Герои, чей образ основан на фанатах
-         российской: рок-музыки 90-х, мечтают стать популярными и разговаривают: на молодёжном сленге, постоянно употребляя
-          слово «блин»'''
-        lst = st.split(':')
-        return lst
+        st = 'Рок-группа "Багровый фантомас, друг Шершняги"'
+        return st
+
+    def team(self):
+        return self
 
 
 class Shershnyga(Strength):
@@ -178,10 +179,11 @@ class Shershnyga(Strength):
         return 'Шершняга'
 
     def description(self):
-        st = '''Рок-группа «Багровый фантомас», состоящая из Розы Робота: и Шершняги. Герои, чей образ основан на фанатах
-         российской :рок-музыки 90-х, мечтают стать популярными и разговаривают:на молодёжном сленге, постоянно употребляя слово «блин»'''
-        lst = st.split(':')
-        return lst
+        st = 'Рок-группа "Багровый фантомас, друг Розы"'
+        return st
+
+    def team(self):
+        return self
 
 
 class Journalist(Strength):
@@ -192,9 +194,9 @@ class Journalist(Strength):
     def degrade(self, hero):
         self.damage *= 0.7
 
-    def run(self, hero, _ag):
-        if _ag <= 7:
-            _ag += 2
+    def run(self, hero, _int):
+        if _int <= 7:
+            _int += 2
 
     def image(self):
         return "6.jpg"
@@ -203,9 +205,8 @@ class Journalist(Strength):
         return 'Журналист'
 
     def description(self):
-        st = '''Ведущий телепередачи «Сдохни или умри». : «Сдохни или умри» — это пародия на шоу о выживании: в дикой 
-        природе, только здесь герой пытается выжить: в метро, канализации или лесу с «заброшенными собаками»'''
-        lst = st.split(':')
-        return lst
+        st = 'Ведущий телепередачи "Загадка дыры"'
+        return st
 
-
+    def team(self):
+        return self
