@@ -118,12 +118,12 @@ class Rosa_robot(Agility):
         self.skills = [self.you_dontknow, self.friend_hit]
 
     def you_dontknow(self, enemy_hero):
-        enemy_hero.intel -= 2
+        enemy_hero._int -= 2
 
     def friend_hit(self, enemy_hero):
         if enemy_hero == Shershnyga:
-            enemy_hero.intel = int(enemy_hero.intel * 0.85)
-            print(enemy_hero.intel)
+            enemy_hero._int = int(enemy_hero._int * 0.85)
+            print(enemy_hero._int)
             print(Shershnyga._int)
 
     def image(self):

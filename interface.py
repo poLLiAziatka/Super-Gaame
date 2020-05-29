@@ -245,6 +245,8 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
 
     def step():
         nonlocal active_team
+
+
         if active_team == name_team1:
             active_team = name_team2
         else:
@@ -343,7 +345,7 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                     image = pygame.image.load(board.field[i][j].image()).convert_alpha()
                     new_image = pygame.transform.scale(image, (s_x, s_x))
 
-                    rect = pygame.Rect((size + i * s_x, size + j * s_x), (s_x, s_x))
+                    rect = pygame.Rect((size + i * s_x, s_x * (x_size_field - j -1) + size), (s_x, s_x))
                     if board.field[i][j].health > 0:
                         surf = pygame.Surface((s_x, s_x))
 
@@ -353,6 +355,14 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                         heroes_rect.append([board.field[i][j], rect])
                         rects.append(rect)
 
+                    else:
+                        if board.field[i][j].team == name_team1:
+                            heroes_team_0.remove(board.field[i][j])
+                        else:
+                            heroes_team_1.remove(board.field[i][j])
+                        board.field[i][j] = 0
+
+
         if active_rect is not None:
             possible_move = []
             for i in range(len(board.field)):
@@ -360,28 +370,28 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
                     if active_rect is not None:
                         if board.field[i][j] == active_rect[0]:
                             if i != x_size_field - 1:
-                                rect = pygame.Rect((size + (i + 1) * s_x, size + j * s_x), (s_x, s_x))
+                                rect = pygame.Rect((size + (i + 1) * s_x, s_x * (x_size_field - j - 1) + size), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
                                 surf.set_alpha(150)
                                 sc.blit(surf, rect)
                                 possible_move.append([rect, 'направо'])
                             if j != y_size_field - 1:
-                                rect = pygame.Rect((size + (i) * s_x, size + (j + 1) * s_x), (s_x, s_x))
+                                rect = pygame.Rect((size + (i) * s_x, s_x * (x_size_field - j - 2) + size), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
                                 surf.set_alpha(150)
                                 sc.blit(surf, rect)
                                 possible_move.append([rect, 'вниз'])
                             if j != 0:
-                                rect = pygame.Rect((size + (i) * s_x, size + (j - 1) * s_x), (s_x, s_x))
+                                rect = pygame.Rect((size + (i) * s_x,s_x * (x_size_field - j ) + size), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
                                 surf.set_alpha(150)
                                 sc.blit(surf, rect)
                                 possible_move.append([rect, 'вверх'])
                             if i != 0:
-                                rect = pygame.Rect((size + (i - 1) * s_x, size + (j) * s_x), (s_x, s_x))
+                                rect = pygame.Rect((size + (i - 1) * s_x, s_x * (x_size_field - j -1) + size), (s_x, s_x))
                                 surf = pygame.Surface((s_x, s_x))
                                 surf.fill((255, 130, 110))
                                 surf.set_alpha(150)
@@ -426,14 +436,24 @@ def game(name_team1, name_team2, x_size_field, y_size_field, coordinates):
         sc.blit(text, (int(size * 6.5), size // 2))
         sc.blit(text2, (int(size * 6.5), size // 3))
 
-        if not heroes_team_1:
-            final(heroes_team_0)
-        elif not heroes_team_0:
-            final(heroes_team_1)
+
 
         if active_rect is not None:
             info_hero(active_rect[0])
 
+        count_0 = 0
+        count_1 = 0
+        for i in range(x_size_field):
+            for j in range(x_size_field):
+                if board.field[i][j] != 0:
+                    if board.field[i][j].team == name_team1:
+                        count_0 += 1
+                    elif board.field[i][j].team == name_team2:
+                        count_1 += 1
+        if count_0 == 0:
+            final(name_team1)
+        elif count_1 == 0:
+            final(name_team2)
 
         pygame.display.update()
         clock.tick(FPS)

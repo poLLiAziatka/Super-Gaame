@@ -30,7 +30,7 @@ def battle(attacking, defending):
         if attacking.attack == 0:
             lst.append(f'Персонаж {defending} отклонился от удара персонажа {attacking}')
         elif flag:
-            lst.append(f'Cработал скилл персонажа {attacking}, здоровье {defending} именилось на {attacking.attack}')
+            lst.append(f'Cработал скилл персонажа {attacking} {attacking.skills[i].__name__}, здоровье {defending} именилось на {attacking.attack}')
         else:
             lst.append(f'Персонаж {attacking} ударил персонажа {defending}: - {attacking.attack} здоровья')
         if attacking.health <= 0 or defending.health <= 0:
